@@ -45,10 +45,20 @@
                     
 
                     this.star = this.add.image(400, 300, 'star');
-                    this.star.setInteractive();
+                    this.star.setInteractive({ draggable: true })
+                    this.star.on('dragstart', function(pointer, dragX, dragY){
+        // ...
+                    });
+                    this.star.on('drag', function(pointer, dragX, dragY){
+                     this.star.setPosition(dragX, dragY);
+                    });
+                    this.star.on('dragend', function(pointer, dragX, dragY, dropped){
+        // ...
+                    });
+                    //this.star.setInteractive();
 
                     this.cursors = this.input.keyboard.createCursorKeys();
-                    this.input.on('pointerdown', startDrag,this);
+                    // this.input.on('pointerdown', startDrag,this);
 
                     this.player = this.physics.add.sprite(100, 450, 'perso');
                     this.player.setBounce(0.2);
@@ -82,7 +92,7 @@
                     });
 
                     this.stars.children.iterate(function (child) {
-                    child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+                        child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
                     });
                      //chaque étoile va rebondir un peu différemment
                     this.physics.add.collider(this.stars, this.platforms);
@@ -167,16 +177,16 @@
 
                 }
 
-                function startDrag(pointer,targets){
-                    this.input.off('pointerdown', startDrag,this)
-                    this.dragObj=targets[0];
-                    this.input.on('pointerdown', doDrag,this)
-                }
+                // function startDrag(pointer,targets){
+                //     this.input.off('pointerdown', startDrag,this)
+                //     this.dragObj=targets[0];
+                //     this.input.on('pointerdown', doDrag,this)
+                // }
 
-                function doDrag(pointer){
-                    this.dragObj.x=pointer.x;
-                    this.dragObj.y=pointer.y;
-                }
+                // function doDrag(pointer){
+                //     this.dragObj.x=pointer.x;
+                //     this.dragObj.y=pointer.y;
+                // }
             </script>
         </body>
     </html>
