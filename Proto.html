@@ -44,14 +44,11 @@
                     this.platforms.create(750, 220, 'ground');
                     
 
-                    this.star = this.add.image(400, 300, 'star');
-               
-                    // this.star.setInteractive();
-                    this.input.setDraggable( this.star )
+                    this.star = this.add.sprite(400, 300, 'star').setInteractive();
+                    this.input.setDraggable(this.star);
 
 
                     this.cursors = this.input.keyboard.createCursorKeys();
-                    this.input.on('pointerdown', startDrag,this);
 
                     this.player = this.physics.add.sprite(100, 450, 'perso');
                     this.player.setBounce(0.2);
@@ -98,6 +95,11 @@
                     this.physics.add.collider(this.bombs, this.platforms);
                     this.physics.add.collider(this.player, this.bombs, hitBomb, null, this);
 
+                    this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+                        gameObject.x = dragX;
+                        gameObject.y = dragY;
+
+                    });
                 };
 
                 
@@ -168,17 +170,6 @@
                     }
 
 
-                }
-
-                function startDrag(pointer,targets){
-                    this.input.off('pointerdown', startDrag,this)
-                    this.dragObj=targets[0];
-                    this.input.on('pointerdown', doDrag,this)
-                }
-
-                function doDrag(pointer){
-                    this.dragObj.x=pointer.x;
-                    this.dragObj.y=pointer.y;
                 }
             </script>
         </body>
