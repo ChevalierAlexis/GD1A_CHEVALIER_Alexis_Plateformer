@@ -17,13 +17,16 @@
                 this.load.image('ground', 'assets/platform.png');
                 this.load.image('star', 'assets/star.png');
                 this.load.image('bomb', 'assets/bomb.png');
+                this.load.spritesheet('troll','assets/troll_proto.png',
+                { frameWidth: 64, frameHeight: 64 });
                 this.load.spritesheet('perso','assets/perso.png',
                 { frameWidth: 32, frameHeight: 32 });
                 }
 
 
                 create(){
-                    this.score = 0
+                    this.over=false;
+                    this.score = 0;
                     this.gameOver = false;
                     
                     this.add.image(400, 300, 'sky');
@@ -62,14 +65,6 @@
                     this.physics.add.collider(this.player, this.platforms);
                     this.physics.add.collider(this.player, this.test);
                     this.physics.add.collider(this.test, this.platforms);
-
-                    this.physics.add.collider(this.stars, this.platforms);
-                    this.physics.add.overlap(this.player, this.stars, collectStar, null, this);
-                    //this.physics.add.overlap(this.test, this.platforms, superposition, null, this);
-
-                    this.bombs = this.physics.add.group();
-                    this.physics.add.collider(this.bombs, this.platforms);
-                    this.physics.add.collider(this.player, this.bombs, hitBomb, null, this);
                     
                     this.anims.create({
                     key: 'left',
@@ -99,17 +94,30 @@
                     this.stars.children.iterate(function (child) {
                         child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
                     });
+                    this.physics.add.collider(this.stars, this.platforms);
+                    this.physics.add.overlap(this.player, this.stars, collectStar, null, this);
+                    this.physics.add.overlap(this.test, this.platforms, superposition,null,this);
+
+
+
+                    this.bombs = this.physics.add.group();
+                    this.physics.add.collider(this.bombs, this.platforms);
+                    this.physics.add.collider(this.player, this.bombs, hitBomb, null, this);
 
                     this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
                         gameObject.x = dragX;
                         gameObject.y = dragY;
 
                     });
+                    this.ennemis = this.physics.add.group();
+                    this.ennemi1 = this.ennemis.create(100,200,'troll');
+
                 };
-                    
-   
+
+                
 
                 update(){
+                    this.over=false
                     this.test.setVelocity(0);
                     if (this.gameOver){return;}
 
@@ -128,8 +136,20 @@
                     if (this.cursors.up.isDown && this.player.body.touching.down){
                     this.player.setVelocityY(-330); 
                     }
-
-                };}
+                    if(this.physics.add.overlap(this.test, this.platforms)==true){
+                        this.sup=true
+                    }
+                    else{
+                        this.sup=false
+                    }
+                    while (this.sup==true){
+                        this.test.x=this.test.x-10
+                        this.test.y=this.test.y-10
+                        console.log("while")
+                    }
+                    
+                };
+            }
 
                 var config = {
                 type: Phaser.AUTO,
@@ -151,12 +171,10 @@
                     gameOver = true;
                 }
 
-                // function superposition(test,platforms){
-                //     // while(this.physics.add.overlap(this.test, this.platforms)==true){
-                //     //     gameObject.x = gameObject.x-10
-                //     //     gameObject.y = gameObject.y-10
-                //     // }
-                // }
+                function superposition(test, platforms){
+                    this.test.x=this.test.x-10
+                        this.test.y=this.test.y-10
+                }
 
                 function collectStar(player, star){
                     star.disableBody(true, true); 
