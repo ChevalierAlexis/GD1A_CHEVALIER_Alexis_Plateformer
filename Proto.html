@@ -62,6 +62,14 @@
                     this.physics.add.collider(this.player, this.platforms);
                     this.physics.add.collider(this.player, this.test);
                     this.physics.add.collider(this.test, this.platforms);
+
+                    this.physics.add.collider(this.stars, this.platforms);
+                    this.physics.add.overlap(this.player, this.stars, collectStar, null, this);
+                    //this.physics.add.overlap(this.test, this.platforms, superposition, null, this);
+
+                    this.bombs = this.physics.add.group();
+                    this.physics.add.collider(this.bombs, this.platforms);
+                    this.physics.add.collider(this.player, this.bombs, hitBomb, null, this);
                     
                     this.anims.create({
                     key: 'left',
@@ -91,13 +99,6 @@
                     this.stars.children.iterate(function (child) {
                         child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
                     });
-                    this.physics.add.collider(this.stars, this.platforms);
-                    this.physics.add.overlap(this.player, this.stars, collectStar, null, this);
-
-
-                    this.bombs = this.physics.add.group();
-                    this.physics.add.collider(this.bombs, this.platforms);
-                    this.physics.add.collider(this.player, this.bombs, hitBomb, null, this);
 
                     this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
                         gameObject.x = dragX;
@@ -105,8 +106,8 @@
 
                     });
                 };
-
-                
+                    
+   
 
                 update(){
                     this.test.setVelocity(0);
@@ -150,6 +151,12 @@
                     gameOver = true;
                 }
 
+                // function superposition(test,platforms){
+                //     // while(this.physics.add.overlap(this.test, this.platforms)==true){
+                //     //     gameObject.x = gameObject.x-10
+                //     //     gameObject.y = gameObject.y-10
+                //     // }
+                // }
 
                 function collectStar(player, star){
                     star.disableBody(true, true); 
