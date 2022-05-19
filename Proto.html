@@ -17,6 +17,7 @@
                 this.load.image('ground', 'assets/platform.png');
                 this.load.image('star', 'assets/star.png');
                 this.load.image('bomb', 'assets/bomb.png');
+                this.load.image('bullet1', 'assets/bullet.png');
                 this.load.spritesheet('troll','assets/troll_proto.png',
                 { frameWidth: 64, frameHeight: 64 });
                 this.load.spritesheet('perso','assets/perso.png',
@@ -28,6 +29,11 @@
                     this.over=false;
                     this.score = 0;
                     this.gameOver = false;
+                    this.bullets;
+                    this.ship;
+                    this.speed;
+                    this.stats;
+                    this.lastFired = 0;
                     
                     this.add.image(400, 300, 'sky');
 
@@ -66,6 +72,67 @@
                     this.physics.add.collider(this.player, this.test);
                     this.physics.add.collider(this.test, this.platforms);
                     
+
+                    
+                    var Bullet = new Phaser.Class({
+
+                            Extends: Phaser.GameObjects.Image,
+
+                            initialize:
+
+                            function Bullet (scene)
+                            {
+                                Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bullet1');
+
+                                this.incX = 0;
+                                this.incY = 0;
+                                this.lifespan = 0;
+
+                                this.speed = Phaser.Math.GetSpeed(600, 1);
+                            },
+
+                            fire: function (x, y)
+                            {
+                                this.setActive(true);
+                                this.setVisible(true);
+
+                                //  Bullets fire from the middle of the screen to the given x/y
+                                this.setPosition(400, 300);
+
+                                var angle = Phaser.Math.Angle.Between(x, y, 400, 300);
+
+                                this.setRotation(angle);
+
+                                this.incX = Math.cos(angle);
+                                this.incY = Math.sin(angle);
+
+                                this.lifespan = 1000;
+                            },
+
+                            update: function (time, delta)
+                            {
+                                this.lifespan -= delta;
+
+                                this.x -= this.incX * (this.speed * delta);
+                                this.y -= this.incY * (this.speed * delta);
+
+                                if (this.lifespan <= 0)
+                                {
+                                    this.setActive(false);
+                                    this.setVisible(false);
+                                }
+                            }
+
+                        });
+
+                        bullets = this.add.group({
+                            classType: Bullet,
+                            maxSize: 50,
+                            runChildUpdate: true
+                        });
+
+
+
                     this.anims.create({
                     key: 'left',
                     frames: this.anims.generateFrameNumbers('perso', {start:0,end:3}),
@@ -159,7 +226,17 @@
                         this.test.y=this.test.y-10
                         console.log("while")
                     }
-                    
+                    if (this.ennemis.x-this.player.x<=200)
+                    {
+                        var bullet = bullets.get();
+
+                        if (bullet)
+                        {
+                            bullet.fire(this.player.x, this.player.y);
+
+                            lastFired = time + 50;
+                        }
+                    }
                 };
             }
 
@@ -186,6 +263,10 @@
                 function superposition(test, platforms){
                     this.test.x=this.test.x-10
                         this.test.y=this.test.y-10
+                }
+
+                function tirEnnemi(ennemis, player){
+
                 }
 
                 function collectStar(player, star){
