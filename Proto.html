@@ -80,9 +80,9 @@
 
                             initialize:
 
-                            function Bullet (scene)
+                            function Bullet (sceneBase)
                             {
-                                Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bullet1');
+                                Phaser.GameObjects.Image.call(this, sceneBase, 0, 0, 'bullet1');
 
                                 this.incX = 0;
                                 this.incY = 0;
@@ -125,10 +125,11 @@
 
                         });
 
-                        bullets = this.add.group({
+                        this.bullets = this.add.group({
                             classType: Bullet,
                             maxSize: 50,
-                            runChildUpdate: true
+                            runChildUpdate: true,
+                            CollideWorldBounds: true
                         });
 
 
@@ -178,17 +179,19 @@
                     });
                     this.ennemis = this.physics.add.group({
                         CollideWorldBounds: true,
+                        key:'ennemi'
                         
                     });
                     this.ennemis.enableBody = true
                     
-                    this.ennemis.children.each(function() {
-                        enemy.speed = Math.random() * 2 + 1;
-                    }, this);
+                    // this.ennemis.children.each(function() {
+                    //     enemy.speed = Math.random() * 2 + 1;
+                    // }, this);
                     
                     this.ennemi1 = this.ennemis.create(100,200,'troll');
                     this.physics.add.collider(this.ennemis, this.platforms);
                     this.physics.add.collider(this.player, this.ennemis, hitBomb, null, this);
+                    this.physics.add.collider(this.platforms, this.bullets);
                     
 
                 };
@@ -196,6 +199,7 @@
                 
 
                 update(){
+                  
                     this.over=false
                     this.test.setVelocity(0);
                     if (this.gameOver){return;}
@@ -226,15 +230,15 @@
                         this.test.y=this.test.y-10
                         console.log("while")
                     }
-                    if (this.ennemis.x-this.player.x<=200)
-                    {
-                        var bullet = bullets.get();
+                    if ((this.ennemi1.x+this.player.x)-200<=0)
+                    {   
+                        var bullet = this.bullets.get();
 
                         if (bullet)
                         {
                             bullet.fire(this.player.x, this.player.y);
 
-                            lastFired = time + 50;
+                            this.lastFired = this.time + 50;
                         }
                     }
                 };
@@ -265,9 +269,6 @@
                         this.test.y=this.test.y-10
                 }
 
-                function tirEnnemi(ennemis, player){
-
-                }
 
                 function collectStar(player, star){
                     star.disableBody(true, true); 
