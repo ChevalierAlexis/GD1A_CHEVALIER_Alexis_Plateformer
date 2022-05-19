@@ -109,8 +109,20 @@
                         gameObject.y = dragY;
 
                     });
-                    this.ennemis = this.physics.add.group();
+                    this.ennemis = this.physics.add.group({
+                        CollideWorldBounds: true,
+                        
+                    });
+                    this.ennemis.enableBody = true
+                    
+                    this.ennemis.children.each(function() {
+                        enemy.speed = Math.random() * 2 + 1;
+                    }, this);
+                    
                     this.ennemi1 = this.ennemis.create(100,200,'troll');
+                    this.physics.add.collider(this.ennemis, this.platforms);
+                    this.physics.add.collider(this.player, this.ennemis, hitBomb, null, this);
+                    
 
                 };
 
