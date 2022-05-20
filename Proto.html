@@ -55,15 +55,17 @@
                                 this.speed = Phaser.Math.GetSpeed(600, 1);
                             }
 
-                            fire (x, y)
+                            fire (x, y,px,py)
                             {
                                 this.body.reset(x, y);
-
+                                console.log(this.angle)
                                 this.setActive(true);
                                 this.setVisible(true);
+                                this.setCollideWorldBounds(true);
+                                this.setBounce(1);
 
-                                this.angle = Phaser.Math.Angle.Between(x, y, 400, 300);
-
+                                this.angle = 3.1375//Phaser.Math.Angle.Between(x, y, px, py);
+                                console.log(this.angle)
                                 this.setRotation(this.angle);
                                 
                               
@@ -101,33 +103,24 @@
                                 this.createMultiple({
                                     frameQuantity: 1,
                                     key: 'bullet',
-                                    active: false,
-                                    visible: false,
+                                    active: true,
+                                    visible: true,
                                     allowGravity : false,
+                                    CollideWorldBounds: true,
+                                    runChildUpdate: true,
                                     classType: Bullet
                                 });
                             }
 
-                            fireBullet (x, y)
-                            {
-                                // let bullet = this.getFirstDead(false);
+                        //     fireBullet (x, y)
+                        //     {
+                        //         // let bullet = this.getFirstDead(false);
 
-                                if (bullet)
-                                {
-                                    bullet.fire(x, y);
-                                }
-                            }
-                        }
-
-                        class Example extends Phaser.Scene
-                        {
-                            constructor ()
-                            {
-                                super();
-
-                                this.bullets;
-                                this.ennemis;
-                            }
+                        //         if (bullet)
+                        //         {
+                        //             bullet.fire(x, y);
+                        //         }
+                        //     }
                         }
                     
                     this.over=false;
@@ -159,8 +152,6 @@
 
                     this.cursors = this.input.keyboard.createCursorKeys();
 
-                    
-                    this.player.setBounce(0.2);
                     this.player.setCollideWorldBounds(true);
                     this.test.setCollideWorldBounds(true);
                     //this.bullets.setCollideWorldBounds(true);
@@ -336,7 +327,7 @@
                         {
                             this.bullet.fire(this.ennemi1.x, this.ennemi1.y, this.player.x, this.player.y);
 
-                            this.lastFired = time + 50;
+                            this.lastFired = time + 3000;
                         }
                         }
             
