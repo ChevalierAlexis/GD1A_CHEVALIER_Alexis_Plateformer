@@ -17,24 +17,15 @@
                 this.load.image('ground', 'assets/platform.png');
                 this.load.image('star', 'assets/star.png');
                 this.load.image('bomb', 'assets/bomb.png');
-                this.load.image('bullet1', 'assets/bullet.png');
+                this.load.image('bullet', 'assets/bullet.png');
                 this.load.spritesheet('troll','assets/troll_proto.png',
                 { frameWidth: 64, frameHeight: 64 });
-                this.load.spritesheet('perso','assets/perso.png',
-                { frameWidth: 32, frameHeight: 32 });
+                this.load.spritesheet('perso','assets/Chad.png',
+                { frameWidth: 64, frameHeight: 64 });
                 }
 
 
                 create(){
-                    this.over=false;
-                    this.score = 0;
-                    this.gameOver = false;
-                    this.bullets;
-                    this.ship;
-                    this.speed;
-                    this.stats;
-                    this.lastFired = 0;
-                    
                     this.add.image(400, 300, 'sky');
 
                     this.platforms = this.physics.add.staticGroup();
@@ -45,6 +36,110 @@
                     
 
                     this.test = this.physics.add.sprite(400, 300, 'star').setInteractive();
+
+                    this.player = this.physics.add.sprite(100, 450, 'perso');
+
+                    class Bullet extends Phaser.Physics.Arcade.Sprite
+                        {
+                            constructor (scene, x, y)
+                            {
+                                super(scene, x, y, 'bullet');
+                            }
+
+                            Bullet (scene)
+                            {
+                                this.incX = 0;
+                                this.incY = 0;
+                                this.lifespan = 0;
+                                
+                                this.speed = Phaser.Math.GetSpeed(600, 1);
+                            }
+
+                            fire (x, y)
+                            {
+                                this.body.reset(x, y);
+
+                                this.setActive(true);
+                                this.setVisible(true);
+
+                                this.angle = Phaser.Math.Angle.Between(x, y, 400, 300);
+
+                                this.setRotation(this.angle);
+                                
+                              
+                                this.incX = Math.cos(this.angle);
+                                this.incY = Math.sin(this.angle);
+
+                                this.lifespan = 1000;
+                                
+                            }
+                        
+                            update (time, delta)
+                            {
+                                super.update(time, delta);
+
+                                this.lifespan -= delta;
+
+                                this.x -= this.incX * (this.speed * delta);
+                                this.y -= this.incY * (this.speed * delta);
+
+                                if (this.lifespan <= 0)
+                                {
+                                    this.setActive(false);
+                                    this.setVisible(false);
+                                    
+                                }
+                            }
+                        }
+
+                        class Bullets extends Phaser.Physics.Arcade.Group
+                        {
+                            constructor (scene)
+                            {
+                                super(scene.physics.world, scene);
+
+                                this.createMultiple({
+                                    frameQuantity: 1,
+                                    key: 'bullet',
+                                    active: false,
+                                    visible: false,
+                                    allowGravity : false,
+                                    classType: Bullet
+                                });
+                            }
+
+                            fireBullet (x, y)
+                            {
+                                // let bullet = this.getFirstDead(false);
+
+                                if (bullet)
+                                {
+                                    bullet.fire(x, y);
+                                }
+                            }
+                        }
+
+                        class Example extends Phaser.Scene
+                        {
+                            constructor ()
+                            {
+                                super();
+
+                                this.bullets;
+                                this.ennemis;
+                            }
+                        }
+                    
+                    this.over=false;
+                    this.score = 0;
+                    this.gameOver = false;
+                    this.bullets;
+                    this.speed;
+                    this.stats;
+                    this.lastFired = 0;
+                    this.bullets = new Bullets(this);
+                    
+                    
                     this.test.body.allowGravity=false;
                     //this.test.setAllowGravity(false);
 
@@ -64,179 +159,93 @@
 
                     this.cursors = this.input.keyboard.createCursorKeys();
 
-                    this.player = this.physics.add.sprite(100, 450, 'perso');
+                    
                     this.player.setBounce(0.2);
                     this.player.setCollideWorldBounds(true);
                     this.test.setCollideWorldBounds(true);
+                    //this.bullets.setCollideWorldBounds(true);
+    
                     this.physics.add.collider(this.player, this.platforms);
                     this.physics.add.collider(this.player, this.test);
                     this.physics.add.collider(this.test, this.platforms);
+                    this.physics.add.collider(this.bullets, this.platforms);
                     
 
                     
-                    var Bullet = new Phaser.Class({
+                    // var Bullet = new Phaser.Class({
 
-                            Extends: Phaser.GameObjects.Image,
+                    //         Extends: Phaser.GameObjects.Image,
 
-                            initialize:
+                    //         initialize:
 
-                            function Bullet (sceneBase)
-                            {
-                                Phaser.GameObjects.Image.call(this, sceneBase, 0, 0, 'bullet1');
+                    //         function Bullet (sceneBase)
+                    //         {
+                    //             Phaser.GameObjects.Image.call(this, sceneBase, 0, 0, 'bullet1');
 
-                                this.incX = 0;
-                                this.incY = 0;
-                                this.lifespan = 0;
+                    //             this.incX = 0;
+                    //             this.incY = 0;
+                    //             this.lifespan = 0;
 
-                                this.speed = Phaser.Math.GetSpeed(600, 1);
-                            },
+                    //             this.speed = Phaser.Math.GetSpeed(600, 1);
+                    //         },
 
-                            fire: function (x, y)
-                            {
-                                this.setActive(true);
-                                this.setVisible(true);
+                    //         fire: function (x, y)
+                    //         {
+                    //             this.setActive(true);
+                    //             this.setVisible(true);
 
-                                //  Bullets fire from the middle of the screen to the given x/y
-                                this.setPosition(400, 300);
+                    //             //  Bullets fire from the middle of the screen to the given x/y
+                    //             this.setPosition(400, 300);
 
-                                var angle = Phaser.Math.Angle.Between(x, y, 400, 300);
+                    //             var angle = Phaser.Math.Angle.Between(x, y, 400, 300);
 
-                                this.setRotation(angle);
+                    //             this.setRotation(angle);
 
-                                this.incX = Math.cos(angle);
-                                this.incY = Math.sin(angle);
+                    //             this.incX = Math.cos(angle);
+                    //             this.incY = Math.sin(angle);
 
-                                this.lifespan = 1000;
-                            },
+                    //             this.lifespan = 1000;
+                    //         },
 
-                            update: function (time, delta)
-                            {
-                                this.lifespan -= delta;
+                    //         update: function (time, delta)
+                    //         {
+                    //             this.lifespan -= delta;
 
-                                this.x -= this.incX * (this.speed * delta);
-                                this.y -= this.incY * (this.speed * delta);
+                    //             this.x -= this.incX * (this.speed * delta);
+                    //             this.y -= this.incY * (this.speed * delta);
 
-                                if (this.lifespan <= 0)
-                                {
-                                    this.setActive(false);
-                                    this.setVisible(false);
-                                }
-                            }
+                    //             if (this.lifespan <= 0)
+                    //             {
+                    //                 this.setActive(false);
+                    //                 this.setVisible(false);
+                    //             }
+                    //         }
 
-                        });
+                    //     });
 
-                        this.bullets = this.add.group({
-                            classType: Bullet,
-                            maxSize: 50,
-                            runChildUpdate: true,
-                            CollideWorldBounds: true
-                        });
+                    //     this.bullets = this.add.group({
+                    //         classType: Bullet,
+                    //         maxSize: 1,
+                    //         runChildUpdate: true,
+                    //         CollideWorldBounds: true
+                    //     });
 
-                        // class Bullet extends Phaser.Physics.Arcade.Sprite
-                        // {
-                        //     constructor (scene, x, y)
-                        //     {
-                        //         super(scene, x, y, 'bullet');
-                        //     }
-
-                        //     fire (x, y)
-                        //     {
-                        //         this.body.reset(x, y);
-
-                        //         this.setActive(true);
-                        //         this.setVisible(true);
-
-                        //         this.setVelocityY(-300);
-                        //     }
-
-                        //     preUpdate (time, delta)
-                        //     {
-                        //         super.preUpdate(time, delta);
-
-                        //         if (this.y <= -32)
-                        //         {
-                        //             this.setActive(false);
-                        //             this.setVisible(false);
-                        //         }
-                        //     }
-                        // }
-
-                        // class Bullets extends Phaser.Physics.Arcade.Group
-                        // {
-                        //     constructor (scene)
-                        //     {
-                        //         super(scene.physics.world, scene);
-
-                        //         this.createMultiple({
-                        //             frameQuantity: 5,
-                        //             key: 'bullet',
-                        //             active: false,
-                        //             visible: false,
-                        //             classType: Bullet
-                        //         });
-                        //     }
-
-                        //     fireBullet (x, y)
-                        //     {
-                        //         let bullet = this.getFirstDead(false);
-
-                        //         if (bullet)
-                        //         {
-                        //             bullet.fire(x, y);
-                        //         }
-                        //     }
-                        // }
-
-                        // class Example extends Phaser.Scene
-                        // {
-                        //     constructor ()
-                        //     {
-                        //         super();
-
-                        //         this.bullets;
-                        //         this.ship;
-                        //     }
-
-                        //     preload ()
-                        //     {
-                        //         this.load.image('bullet', 'assets/sprites/bullets/bullet7.png');
-                        //         this.load.image('ship', 'assets/sprites/bsquadron1.png');
-                        //     }
-
-                        //     create ()
-                        //     {
-                        //         this.bullets = new Bullets(this);
-
-                        //         this.ship = this.add.image(400, 500, 'ship');
-
-                        //         this.input.on('pointermove', (pointer) => {
-
-                        //             this.ship.x = pointer.x;
-
-                        //         });
-
-                        //         this.input.on('pointerdown', (pointer) => {
-
-                        //             this.bullets.fireBullet(this.ship.x, this.ship.y);
-
-                        //         });
-                        //     }
-                        // }
+                        
 
                     this.anims.create({
                     key: 'left',
-                    frames: this.anims.generateFrameNumbers('perso', {start:0,end:3}),
+                    frames: this.anims.generateFrameNumbers({ key: 'perso', frame: 0 }),
                     frameRate: 10,
                     repeat: -1
                     });
                     this.anims.create({
                     key: 'turn',
-                    frames: [ { key: 'perso', frame: 4 } ],
+                    frames: [ { key: 'perso', frame: 0 } ],
                     frameRate: 20
                     });
                     this.anims.create({
                     key: 'right',
-                    frames: this.anims.generateFrameNumbers('perso', {start:5,end:8}),
+                    frames: this.anims.generateFrameNumbers({ key: 'perso', frame: 0 }),
                     frameRate: 10,
                     repeat: -1
                     });
@@ -287,7 +296,7 @@
 
                 
 
-                update(){
+                update(time,delta){
                   
                     this.over=false
                     this.test.setVelocity(0);
@@ -295,15 +304,15 @@
 
                     if (this.cursors.left.isDown){ 
                         this.player.setVelocityX(-160);
-                        this.player.anims.play('left', true);
+                        // this.player.anims.play('left', true);
                     }
                     else if (this.cursors.right.isDown){ 
                         this.player.setVelocityX(160); 
-                        this.player.anims.play('right', true); 
+                        // this.player.anims.play('right', true); 
                     }
                     else{
                         this.player.setVelocityX(0);
-                        this.player.anims.play('turn'); 
+                        // this.player.anims.play('turn'); 
                     }
                     if (this.cursors.up.isDown && this.player.body.touching.down){
                     this.player.setVelocityY(-330); 
@@ -317,22 +326,34 @@
                     while (this.sup==true){
                         this.test.x=this.test.x-10
                         this.test.y=this.test.y-10
-                        console.log("while")
+                        
                     }
-                    if ((this.ennemi1.x+this.player.x)-200<=0)
-                    {   
-                        var bullet = this.bullets.get();
-
-                        if (bullet)
+                    if((this.ennemi1.x+this.player.x)-200<=0 && time > this.lastFired)
+                        {console.log("while")
+                        // this.bullets.fireBullet(this.player.x, this.player.y);
+                        this.bullet = this.bullets.get();
+                        if (this.bullet)
                         {
-                            bullet.fire(this.player.x, this.player.y);
+                            this.bullet.fire(this.ennemi1.x, this.ennemi1.y, this.player.x, this.player.y);
 
-                            this.lastFired = this.time + 50;
+                            this.lastFired = time + 50;
                         }
-                    }
-                };
-            }
+                        }
+            
+            //         {   
+            //             var bullet = this.bullets.get();
 
+            //             if (bullet)
+            //             {
+            //                 bullet.fire(this.player.x, this.player.y);
+
+            //                 this.lastFired = this.time + 50;
+            //             }
+            //         }
+            //     };
+            // }
+            }
+        }
                 var config = {
                 type: Phaser.AUTO,
                 width: 1920, height: 1080,
@@ -340,7 +361,7 @@
                         default: 'arcade',
                         arcade: {
                             gravity: { y: 300 },
-                            debug: true
+                            debug: false
                         }},
                 scene: [sceneBase]
                 };
