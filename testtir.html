@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><title>Mon 1er jeu Phaser</title>
+<script
+src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js">
+class Bullet extends Phaser.Physics.Arcade.Sprite
+{
+    constructor (scene, x, y)
+    {
+        super(scene, x, y, 'bullet');
+    }
+
+    fire (x, y)
+    {
+        this.body.reset(x, y);
+
+        this.setActive(true);
+        this.setVisible(true);
+
+        this.setVelocityY(-300);
+    }
+
+    preUpdate (time, delta)
+    {
+        super.preUpdate(time, delta);
+
+        if (this.y <= -32)
+        {
+            this.setActive(false);
+            this.setVisible(false);
+        }
+    }
+}
+
+class Bullets extends Phaser.Physics.Arcade.Group
+{
+    constructor (scene)
+    {
+        super(scene.physics.world, scene);
+
+        this.createMultiple({
+            frameQuantity: 5,
+            key: 'bullet',
+            active: false,
+            visible: false,
+            classType: Bullet
+        });
+    }
+
+    fireBullet (x, y)
+    {
+        let bullet = this.getFirstDead(false);
+
+        if (bullet)
+        {
+            bullet.fire(x, y);
+        }
+    }
+}
+
+class Example extends Phaser.Scene
+{
+    constructor ()
+    {
+        super();
+
+        this.bullets;
+        this.player;
+    }
+
+preload(){
+this.load.image('sky', 'assets/sky.png');
+this.load.image('ground', 'assets/platform.png');
+this.load.image('star', 'assets/star.png');
+this.load.image('bomb', 'assets/bomb.png');
+this.load.image('bullet', 'assets/bullet.png');
+this.load.spritesheet('perso','assets/Chad.png',
+{ frameWidth: 32, frameHeight: 32 });
+this.platforms
+this.player = this.physics.add.sprite(100, 450, 'perso');
+this.player.setBounce(0.2);
+this.player.setCollideWorldBounds(true);
+this.physics.add.collider(this.player, this.platforms);
+this.bullets = new Bullets(this);
+
+        this.input.on('pointermove', (pointer) => {
+
+            this.ship.x = pointer.x;
+
+        });
+
+        this.input.on('pointerdown', (pointer) => {
+
+            this.bullets.fireBullet(this.player.x, this.player.y);
+
+        });
+
+this.anims.create({
+key: 'left',
+frames: this.anims.generateFrameNumbers('perso', {start:0,end:3}),
+frameRate: 10,
+repeat: -1
+});
+this.anims.create({
+key: 'turn',
+frames: [ { key: 'perso', frame: 4 } ],
+frameRate: 20
+});
+this.anims.create({
+key: 'right',
+frames: this.anims.generateFrameNumbers('perso', {start:5,end:8}),
+frameRate: 10,
+repeat: -1
+});
+
+create (){
+    
+    cursors = this.input.keyboard.createCursorKeys();
+    if (cursors.left.isDown){ //si la touche gauche est appuyée
+player.setVelocityX(-160); //alors vitesse négative en X
+player.anims.play('left', true); //et animation => gauche
+}
+else if (cursors.right.isDown){ //sinon si la touche droite est appuyée
+player.setVelocityX(160); //alors vitesse positive en X
+player.anims.play('right', true); //et animation => droite
+}
+else{ // sinon
+player.setVelocityX(0); //vitesse nulle
+player.anims.play('turn'); //animation fait face caméra
+}
+if (cursors.up.isDown && player.body.touching.down){
+//si touche haut appuyée ET que le perso touche le sol
+player.setVelocityY(-330); //alors vitesse verticale négative
+//(on saute)
+}
+this.add.image(400, 300, 'sky');
+platforms = this.physics.add.staticGroup();
+platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+platforms.create(600, 400, 'ground');
+platforms.create(50, 250, 'ground');
+platforms.create(750, 220, 'ground');
+}
+
+function update(){}
+
+var config = {
+type: Phaser.CANVAS,
+width: 800, height: 600,
+physics: {
+default: 'arcade',
+arcade: {
+gravity: { y: 300 },
+debug: false
+}},
+scene: Example
+};
+let game = new Phaser.Game(config);
+</script>
+<style type="text/css"> body { margin: 0; }</style>
+</head>
+<body>
+    <script type="text/javascript">
+    </script>
+    </body>
+</html>
