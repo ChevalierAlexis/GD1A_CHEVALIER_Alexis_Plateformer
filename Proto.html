@@ -23,23 +23,19 @@
                 this.load.spritesheet('perso','assets/Chad.png',
                 { frameWidth: 64, frameHeight: 64 });
                 }
-
-
                 create(){
                     this.add.image(400, 300, 'sky');
-
                     this.platforms = this.physics.add.staticGroup();
                     this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
                     this.platforms.create(600, 400, 'ground');
                     this.platforms.create(50, 250, 'ground');
                     this.platforms.create(750, 220, 'ground');
-                    
 
+
+                    this.test = this.physics.add.sprite(400, 300, 'star').setInteractive();
                     this.test = this.physics.add.sprite(400, 300, 'star').setInteractive().setImmovable();
 
                     this.player = this.physics.add.sprite(100, 450, 'perso');
-
-                    
 
                     class Bullet extends Phaser.Physics.Arcade.Sprite
                         {
@@ -47,7 +43,6 @@
                             {
                                 super(scene, x, y, 'bullet');
                             }
-
                             Bullet (scene)
                             {
                                 this.incX = 0;
@@ -56,24 +51,20 @@
                                 
                                 this.speed = Phaser.Math.GetSpeed(600, 1);
                             }
-
                             fire (x, y,px,py)
                             {
                                 this.body.reset(x, y);
-                                console.log(this.angle)
                                 this.setActive(true);
                                 this.setVisible(true);
                                 this.setCollideWorldBounds(true);
                                 this.setBounce(1);
-
                                 this.angle = 3.1375//Phaser.Math.Angle.Between(x, y, px, py);
-                                console.log(this.angle)
+
                                 this.setRotation(this.angle);
                                 
                               
                                 this.incX = Math.cos(this.angle);
                                 this.incY = Math.sin(this.angle);
-
                                 this.lifespan = 1000;
                                 
                             }
@@ -81,12 +72,9 @@
                             update (time, delta)
                             {
                                 super.update(time, delta);
-
                                 this.lifespan -= delta;
-
                                 this.x -= this.incX * (this.speed * delta);
                                 this.y -= this.incY * (this.speed * delta);
-
                                 if (this.lifespan <= 0)
                                 {
                                     this.setActive(false);
@@ -95,13 +83,11 @@
                                 }
                             }
                         }
-
                         class Bullets extends Phaser.Physics.Arcade.Group
                         {
                             constructor (scene)
                             {
                                 super(scene.physics.world, scene);
-
                                 this.createMultiple({
                                     frameQuantity: 1,
                                     key: 'bullet',
@@ -113,11 +99,9 @@
                                     classType: Bullet
                                 });
                             }
-
                         //     fireBullet (x, y)
                         //     {
                         //         // let bullet = this.getFirstDead(false);
-
                         //         if (bullet)
                         //         {
                         //             bullet.fire(x, y);
@@ -125,7 +109,7 @@
                         //     }
                         }
                     
-                    this.over = false;
+                    this.over=false;
                     this.score = 0;
                     this.gameOver = false;
                     this.bullets;
@@ -133,39 +117,20 @@
                     this.stats;
                     this.lastFired = 0;
                     this.bullets = new Bullets(this);
-                    this.movable;
-                    this.shouldMove = false;
+                    this.pointer;
+                    this.memx = 0;
+                    this.memy = 0;
                     
                     
                     this.test.body.allowGravity=false;
-                    //this.test.setAllowGravity(false);
-
                     this.test.on('pointerover', function () {
-
                         this.setTint(0x00ff00);
-
                     });
-
-                    this.test.on('pointerdown', function () 
-                    {
-                        mygame.movable = this.test;
-                        mygame.shouldMove = true;
-                        console.log(mygame.movable);    
-                        mygame.input.mouse.requestPointerLock();
-
-                    });
-
-
                     this.test.on('pointerout', function () {
-
                         this.clearTint();
-
                     });
-                    //this.input.setDraggable(this.test);
-
-
+                    this.input.setDraggable(this.test);
                     this.cursors = this.input.keyboard.createCursorKeys();
-
                     this.player.setCollideWorldBounds(true);
                     this.test.setCollideWorldBounds(true);
                     //this.bullets.setCollideWorldBounds(true);
@@ -175,68 +140,49 @@
                     this.physics.add.collider(this.test, this.platforms);
                     this.physics.add.collider(this.bullets, this.platforms);
                     
-
                     
                     // var Bullet = new Phaser.Class({
-
                     //         Extends: Phaser.GameObjects.Image,
-
                     //         initialize:
-
                     //         function Bullet (sceneBase)
                     //         {
                     //             Phaser.GameObjects.Image.call(this, sceneBase, 0, 0, 'bullet1');
-
                     //             this.incX = 0;
                     //             this.incY = 0;
                     //             this.lifespan = 0;
-
                     //             this.speed = Phaser.Math.GetSpeed(600, 1);
                     //         },
-
                     //         fire: function (x, y)
                     //         {
                     //             this.setActive(true);
                     //             this.setVisible(true);
-
                     //             //  Bullets fire from the middle of the screen to the given x/y
                     //             this.setPosition(400, 300);
-
                     //             var angle = Phaser.Math.Angle.Between(x, y, 400, 300);
-
                     //             this.setRotation(angle);
-
                     //             this.incX = Math.cos(angle);
                     //             this.incY = Math.sin(angle);
-
                     //             this.lifespan = 1000;
                     //         },
-
                     //         update: function (time, delta)
                     //         {
                     //             this.lifespan -= delta;
-
                     //             this.x -= this.incX * (this.speed * delta);
                     //             this.y -= this.incY * (this.speed * delta);
-
                     //             if (this.lifespan <= 0)
                     //             {
                     //                 this.setActive(false);
                     //                 this.setVisible(false);
                     //             }
                     //         }
-
                     //     });
-
                     //     this.bullets = this.add.group({
                     //         classType: Bullet,
                     //         maxSize: 1,
                     //         runChildUpdate: true,
                     //         CollideWorldBounds: true
                     //     });
-
                         
-
                     this.anims.create({
                     key: 'left',
                     frames: this.anims.generateFrameNumbers({ key: 'perso', frame: 0 }),
@@ -255,22 +201,17 @@
                     repeat: -1
                     });
                     
-
                     this.scoreText=this.add.text(16,16,'score: 0',{fontSize:'32px',fill:'#000'});
                     this.stars = this.physics.add.group({
                         key: 'star', repeat: 11,
                         setXY: { x: 12, y: 0, stepX: 70 }
                     });
-
                     this.stars.children.iterate(function (child) {
                         child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
                     });
                     this.physics.add.collider(this.stars, this.platforms);
                     this.physics.add.overlap(this.player, this.stars, collectStar, null, this);
                     this.physics.add.overlap(this.test, this.platforms, superposition,null,this);
-
-
-
                     this.bombs = this.physics.add.group();
                     this.physics.add.collider(this.bombs, this.platforms);
                     this.physics.add.collider(this.player, this.bombs, hitBomb, null, this);
@@ -278,8 +219,8 @@
                     this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
                         gameObject.x = dragX;
                         gameObject.y = dragY;
-
                     });
+
                     this.ennemis = this.physics.add.group({
                         CollideWorldBounds: true,
                         key:'ennemi'
@@ -296,17 +237,14 @@
                     this.physics.add.collider(this.player, this.ennemis, hitBomb, null, this);
                     this.physics.add.collider(this.platforms, this.bullets);
                     
-
                 };
                 
-                
-
                 update(time,delta){
-                  
+                    console.log(this.memx)
+                    console.log(this.memy)
                     this.over=false
                     this.test.setVelocity(0);
                     if (this.gameOver){return;}
-
                     if (this.cursors.left.isDown){ 
                         this.player.setVelocityX(-160);
                         // this.player.anims.play('left', true);
@@ -319,52 +257,26 @@
                         this.player.setVelocityX(0);
                         // this.player.anims.play('turn'); 
                     }
-
-
-
                     if (this.cursors.up.isDown && this.player.body.touching.down){
                     this.player.setVelocityY(-330); 
                     }
-                    if(this.physics.add.overlap(this.test, this.platforms)==true){
-                        this.sup=true
-                    }
-                    else{
-                        this.sup=false
-                    }
-                    while (this.sup==true){
-                        this.test.x=this.test.x-10
-                        this.test.y=this.test.y-10
-                        
-                    }
-                    
-                    console.log(this.movable);
-                    if(this.shouldMove)
-                    {
-                        // this.movable.x += this.input.pointer.movementX;
-                        // this.movable.y += this.input.pointer.movementY;
 
-                        // console.log("Coucuo" + this.input.pointer.movementX);
-                    }
 
                     if((this.ennemi1.x+this.player.x)-200<=0 && time > this.lastFired)
-                        {console.log("while")
                         // this.bullets.fireBullet(this.player.x, this.player.y);
                         this.bullet = this.bullets.get();
                         if (this.bullet)
                         {
                             this.bullet.fire(this.ennemi1.x, this.ennemi1.y, this.player.x, this.player.y);
-
                             this.lastFired = time + 3000;
                         }
                         }
             
             //         {   
             //             var bullet = this.bullets.get();
-
             //             if (bullet)
             //             {
             //                 bullet.fire(this.player.x, this.player.y);
-
             //                 this.lastFired = this.time + 50;
             //             }
             //         }
@@ -372,7 +284,6 @@
             // }
             }
         
-        }
                 var config = {
                 type: Phaser.AUTO,
                 width: 1920, height: 1080,
@@ -384,45 +295,35 @@
                         }},
                 scene: [sceneBase]
                 };
-
-                var mygame = new Phaser.Game(config);
-
+                new Phaser.Game(config);
                 function hitBomb(player, bomb){
                     this.physics.pause();
                     player.setTint(0xff0000);
                     player.anims.play('turn');
                     gameOver = true;
                 }
-
                 function superposition(test, platforms){
-                    this.test.x=this.test.x-10
-                        this.test.y=this.test.y-10
+                    this.test.setDragState(this.pointer, 0)
+                    this.test.x = this.memx;
+                    this.test.y = this.memy;
                 }
-
-
                 function collectStar(player, star){
                     star.disableBody(true, true); 
                     this.score += 10;
                     this.scoreText.setText('Score: ' + this.score);
-
-                    if (this.stars.countActive(true) === 0)
-                    {
-                        this.stars.children.iterate(function (child) {
-                        child.enableBody(true, child.x, 0, true, true);
-                        }); 
-                        var x = (player.x < 400) ? Phaser.Math.Between(400, 800) :
-                        Phaser.Math.Between(0, 400);
-                        var bomb = this.bombs.create(x, 16, 'bomb');
-                        bomb.setBounce(1);
-                        bomb.setCollideWorldBounds(true);
-                        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-                        bomb.allowGravity = false; 
+                    if (this.stars.countActive(true) === 0){
+                    this.stars.children.iterate(function (child) {
+                    child.enableBody(true, child.x, 0, true, true);
+                    }); 
+                    var x = (player.x < 400) ? Phaser.Math.Between(400, 800) :
+                    Phaser.Math.Between(0, 400);
+                    var bomb = this.bombs.create(x, 16, 'bomb');
+                    bomb.setBounce(1);
+                    bomb.setCollideWorldBounds(true);
+                    bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+                    bomb.allowGravity = false; 
                     }
-
-                        
                 }
-            
             </script>
         </body>
     </html>
-    
