@@ -39,6 +39,8 @@
 
                     this.player = this.physics.add.sprite(100, 450, 'perso');
 
+                    
+
                     class Bullet extends Phaser.Physics.Arcade.Sprite
                         {
                             constructor (scene, x, y)
@@ -123,7 +125,7 @@
                         //     }
                         }
                     
-                    this.over=false;
+                    this.over = false;
                     this.score = 0;
                     this.gameOver = false;
                     this.bullets;
@@ -131,6 +133,8 @@
                     this.stats;
                     this.lastFired = 0;
                     this.bullets = new Bullets(this);
+                    this.movable;
+                    this.shouldMove = false;
                     
                     
                     this.test.body.allowGravity=false;
@@ -142,12 +146,22 @@
 
                     });
 
+                    this.test.on('pointerdown', function () 
+                    {
+                        mygame.movable = this.test;
+                        mygame.shouldMove = true;
+                        console.log(mygame.movable);    
+                        mygame.input.mouse.requestPointerLock();
+
+                    });
+
+
                     this.test.on('pointerout', function () {
 
                         this.clearTint();
 
                     });
-                    this.input.setDraggable(this.test);
+                    //this.input.setDraggable(this.test);
 
 
                     this.cursors = this.input.keyboard.createCursorKeys();
@@ -284,7 +298,7 @@
                     
 
                 };
-
+                
                 
 
                 update(time,delta){
@@ -305,6 +319,9 @@
                         this.player.setVelocityX(0);
                         // this.player.anims.play('turn'); 
                     }
+
+
+
                     if (this.cursors.up.isDown && this.player.body.touching.down){
                     this.player.setVelocityY(-330); 
                     }
@@ -319,6 +336,16 @@
                         this.test.y=this.test.y-10
                         
                     }
+                    
+                    console.log(this.movable);
+                    if(this.shouldMove)
+                    {
+                        // this.movable.x += this.input.pointer.movementX;
+                        // this.movable.y += this.input.pointer.movementY;
+
+                        // console.log("Coucuo" + this.input.pointer.movementX);
+                    }
+
                     if((this.ennemi1.x+this.player.x)-200<=0 && time > this.lastFired)
                         {console.log("while")
                         // this.bullets.fireBullet(this.player.x, this.player.y);
@@ -344,6 +371,7 @@
             //     };
             // }
             }
+        
         }
                 var config = {
                 type: Phaser.AUTO,
@@ -356,7 +384,8 @@
                         }},
                 scene: [sceneBase]
                 };
-                new Phaser.Game(config);
+
+                var mygame = new Phaser.Game(config);
 
                 function hitBomb(player, bomb){
                     this.physics.pause();
@@ -376,21 +405,24 @@
                     this.score += 10;
                     this.scoreText.setText('Score: ' + this.score);
 
-                    if (this.stars.countActive(true) === 0){
-                    this.stars.children.iterate(function (child) {
-                    child.enableBody(true, child.x, 0, true, true);
-                    }); 
-                    var x = (player.x < 400) ? Phaser.Math.Between(400, 800) :
-                    Phaser.Math.Between(0, 400);
-                    var bomb = this.bombs.create(x, 16, 'bomb');
-                    bomb.setBounce(1);
-                    bomb.setCollideWorldBounds(true);
-                    bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-                    bomb.allowGravity = false; 
+                    if (this.stars.countActive(true) === 0)
+                    {
+                        this.stars.children.iterate(function (child) {
+                        child.enableBody(true, child.x, 0, true, true);
+                        }); 
+                        var x = (player.x < 400) ? Phaser.Math.Between(400, 800) :
+                        Phaser.Math.Between(0, 400);
+                        var bomb = this.bombs.create(x, 16, 'bomb');
+                        bomb.setBounce(1);
+                        bomb.setCollideWorldBounds(true);
+                        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+                        bomb.allowGravity = false; 
                     }
 
-
+                        
                 }
+            
             </script>
         </body>
     </html>
+    
