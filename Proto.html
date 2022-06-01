@@ -18,7 +18,7 @@
                 this.load.image('star', 'assets/star.png');
                 this.load.image('bomb', 'assets/bomb.png');
                 this.load.image('bullet', 'assets/bullet.png');
-                this.load.spritesheet('troll','assets/troll_proto.png',
+                this.load.spritesheet('troll','assets/troll.png',
                 { frameWidth: 64, frameHeight: 64 });
                 this.load.spritesheet('perso','assets/Chad.png',
                 { frameWidth: 64, frameHeight: 64 });
@@ -30,10 +30,6 @@
                     this.platforms.create(600, 400, 'ground');
                     this.platforms.create(50, 250, 'ground');
                     this.platforms.create(750, 220, 'ground');
-
-
-                    this.test = this.physics.add.sprite(400, 300, 'star').setInteractive();
-                    this.test = this.physics.add.sprite(400, 300, 'star').setInteractive().setImmovable();
 
                     this.player = this.physics.add.sprite(100, 450, 'perso');
 
@@ -120,7 +116,10 @@
                     this.pointer;
                     this.memx = 0;
                     this.memy = 0;
+                    this.pv = 5;
                     
+                    this.test = this.physics.add.sprite(400, 300, 'star').setInteractive();
+                    this.test = this.physics.add.sprite(400, 300, 'star').setInteractive().setImmovable();
                     
                     this.test.body.allowGravity=false;
                     this.test.on('pointerover', function () {
@@ -214,27 +213,35 @@
                     this.physics.add.overlap(this.test, this.platforms, superposition,null,this);
                     this.bombs = this.physics.add.group();
                     this.physics.add.collider(this.bombs, this.platforms);
-                    this.physics.add.collider(this.player, this.bombs, hitBomb, null, this);
 
                     this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
                         gameObject.x = dragX;
                         gameObject.y = dragY;
                     });
 
-                    this.ennemis = this.physics.add.group({
-                        CollideWorldBounds: true,
-                        key:'ennemi'
-                        
-                    });
+                    this.ennemis = this.physics.add.group();
                     this.ennemis.enableBody = true
+                    this.physics.add.collider(this.player,this.ennemis, degat, null, this);
+
+                    this.ennemi = this.physics.add.sprite(200,200,'troll');
+                    this.ennemis.add(this.ennemi);
+                    
+                    
+
+                    // this.ennemis = this.physics.add.group({
+                    //     CollideWorldBounds: true,
+                    //     key:'ennemi'
+                        
+                    // });
+                    // this.ennemis.enableBody = true
                     
                     // this.ennemis.children.each(function() {
                     //     enemy.speed = Math.random() * 2 + 1;
                     // }, this);
                     
-                    this.ennemi1 = this.ennemis.create(100,200,'troll');
+                    // this.ennemi1 = this.ennemis.create(100,200,'troll');
                     this.physics.add.collider(this.ennemis, this.platforms);
-                    this.physics.add.collider(this.player, this.ennemis, hitBomb, null, this);
+                    // this.physics.add.collider(this.player, this.ennemis, hitBomb, null, this);
                     this.physics.add.collider(this.platforms, this.bullets);
                     
                 };
@@ -262,15 +269,15 @@
                     }
 
 
-                    if((this.ennemi1.x+this.player.x)-200<=0 && time > this.lastFired)
-                        // this.bullets.fireBullet(this.player.x, this.player.y);
-                        this.bullet = this.bullets.get();
-                        if (this.bullet)
-                        {
-                            this.bullet.fire(this.ennemi1.x, this.ennemi1.y, this.player.x, this.player.y);
-                            this.lastFired = time + 3000;
-                        }
-                        }
+                    // if((this.ennemi1.x+this.player.x)-200<=0 && time > this.lastFired)
+                    //     // this.bullets.fireBullet(this.player.x, this.player.y);
+                    //     this.bullet = this.bullets.get();
+                    //     if (this.bullet)
+                    //     {
+                    //         this.bullet.fire(this.ennemi1.x, this.ennemi1.y, this.player.x, this.player.y);
+                    //         this.lastFired = time + 3000;
+                    //     }
+                    //     }
             
             //         {   
             //             var bullet = this.bullets.get();
@@ -282,7 +289,7 @@
             //         }
             //     };
             // }
-            }
+            }}
         
                 var config = {
                 type: Phaser.AUTO,
@@ -296,17 +303,27 @@
                 scene: [sceneBase]
                 };
                 new Phaser.Game(config);
+
                 function hitBomb(player, bomb){
                     this.physics.pause();
                     player.setTint(0xff0000);
                     player.anims.play('turn');
                     gameOver = true;
                 }
-                function superposition(test, platforms){
-                    this.test.setDragState(this.pointer, 0)
-                    this.test.x = this.memx;
-                    this.test.y = this.memy;
+                function superposition(test, platforms, pointer){
+                    // console.log(test)
+                    this.pointer.setDragState(this.pointer, 0);
+                    test.x = this.memx;
+                    test.y = this.memy;
                 }
+
+                function degat(player, ennemis){
+                    this.pv = this.pv-1
+                    if (this.pv<=0){
+                        hitBomb()
+                    }
+                }
+
                 function collectStar(player, star){
                     star.disableBody(true, true); 
                     this.score += 10;

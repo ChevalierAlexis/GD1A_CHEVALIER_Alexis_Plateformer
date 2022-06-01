@@ -1,15 +1,26 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><title>Mon 1er jeu Phaser</title>
+<meta charset="UTF-8" /><title>Station Spatiale</title>
 <script
-src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js">
+src="phaser.min.js"></script>
+<style type="text/css"> body { margin: 0; }</style>
+</head>
+<body>
+    <script type="text/javascript">
 class Bullet extends Phaser.Physics.Arcade.Sprite
 {
     constructor (scene, x, y)
     {
-        super(scene, x, y, 'bullet');
+        super(scene.physics.world,scene, x, y, 'bullet');
+        this.incX = 0;
+        this.incY = 0;
+        this.lifespan = 0;
+        this.ship;
+        this.speed = Phaser.Math.GetSpeed(600, 1);
+       
     }
+    
 
     fire (x, y)
     {
@@ -17,28 +28,36 @@ class Bullet extends Phaser.Physics.Arcade.Sprite
 
         this.setActive(true);
         this.setVisible(true);
+        scene.physics.moveToObject(this.bullet, this.ennemi, 200);
+            // var angle = Phaser.Math.Angle.Between(x, y, this.ship.x, this.ship.y);
 
-        this.setVelocityY(-300);
-    }
+            // this.setRotation(angle);
 
-    preUpdate (time, delta)
-    {
-        super.preUpdate(time, delta);
+            // this.incX = Math.cos(angle);
+            // this.incY = Math.sin(angle);
 
-        if (this.y <= -32)
-        {
-            this.setActive(false);
-            this.setVisible(false);
-        }
+            this.lifespan = 1000;
     }
 }
+
+//     preUpdate (time, delta)
+//     {
+//         super.preUpdate(time, delta);
+
+//         if (this.y <= -32)
+//         {
+//             this.setActive(false);
+//             this.setVisible(false);
+//         }
+//     }
+// }
 
 class Bullets extends Phaser.Physics.Arcade.Group
 {
     constructor (scene)
     {
         super(scene.physics.world, scene);
-
+        this.ship;
         this.createMultiple({
             frameQuantity: 5,
             key: 'bullet',
@@ -57,6 +76,20 @@ class Bullets extends Phaser.Physics.Arcade.Group
             bullet.fire(x, y);
         }
     }
+    update (time, delta)
+        {
+            this.lifespan -= delta;
+
+            // this.x -= this.incX * (this.speed * delta);
+            // this.y -= this.incY * (this.speed * delta);
+
+            if (this.lifespan <= 0)
+            {
+                this.setActive(false);
+                this.setVisible(false);
+            }
+        }
+
 }
 
 class Example extends Phaser.Scene
@@ -66,100 +99,81 @@ class Example extends Phaser.Scene
         super();
 
         this.bullets;
-        this.player;
+        this.ship;
+    }
+    
+
+    preload ()
+    {
+        this.load.image('bullet', 'assets/bullet.png');
+        this.load.image('ship', 'assets/Chad.png');
+        this.load.image('troll', 'assets/troll.png')
     }
 
-preload(){
-this.load.image('sky', 'assets/sky.png');
-this.load.image('ground', 'assets/platform.png');
-this.load.image('star', 'assets/star.png');
-this.load.image('bomb', 'assets/bomb.png');
-this.load.image('bullet', 'assets/bullet.png');
-this.load.spritesheet('perso','assets/Chad.png',
-{ frameWidth: 32, frameHeight: 32 });
-this.player = this.physics.add.sprite(100, 450, 'perso');
-this.player.setBounce(0.2);
-this.player.setCollideWorldBounds(true);
-this.physics.add.collider(this.player, this.platforms);
-this.bullets = new Bullets(this);
+    create ()
+    {
+        var bullets;
+        var speed;
+        var stats;
+        var lastFired = 0;
+        var isDown = false;
+        var mouseX = 0;
+        var mouseY = 0;
+
+        this.bullets = new Bullets(this);
+
+        this.ship = this.add.image(400, 500, 'ship');
+        this.ennemi = this.add.image(200,200,'troll');
 
         this.input.on('pointermove', (pointer) => {
 
-            this.player.x = pointer.x;
+            this.ship.x = pointer.x;
 
         });
 
         this.input.on('pointerdown', (pointer) => {
 
-            this.bullets.fireBullet(this.player.x, this.player.y);
+            this.bullets.fireBullet(this.ship.x, this.ship.y);
 
         });
+    }
 
-this.anims.create({
-key: 'left',
-frames: [{key : 'perso', frame: 0}],
-frameRate: 10,
-repeat: -1
-});
-this.anims.create({
-key: 'turn',
-frames: [{key : 'perso', frame: 0}],
-frameRate: 20
-});
-this.anims.create({
-key: 'right',
-frames: [{key : 'perso', frame: 0}],
-frameRate: 10,
-repeat: -1
-});}
+    update ()
+    {
+    //     if (this.isDown && time > lastFired)
+    // {
+    //     var bullet = bullets.get();
 
-create (){
-    
-    this.cursors = this.input.keyboard.createCursorKeys();
-    if (this.cursors.left.isDown){ //si la touche gauche est appuyée
-this.player.setVelocityX(-160); //alors vitesse négative en X
-this.player.anims.play('left', true); //et animation => gauche
-}
-else if (this.cursors.right.isDown){ //sinon si la touche droite est appuyée
-    this.player.setVelocityX(160); //alors vitesse positive en X
-    this.player.anims.play('right', true); //et animation => droite
-}
-else{ // sinon
-    this.player.setVelocityX(0); //vitesse nulle
-this.player.anims.play('turn'); //animation fait face caméra
-}
-if (this.cursors.up.isDown && this.player.body.touching.down){
-//si touche haut appuyée ET que le perso touche le sol
-this.player.setVelocityY(-330); //alors vitesse verticale négative
-//(on saute)
-}
-this.add.image(400, 300, 'sky');
-this.platforms = this.physics.add.staticGroup();
-this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-this.platforms.create(600, 400, 'ground');
-this.platforms.create(50, 250, 'ground');
-this.platforms.create(750, 220, 'ground');
+    //     if (bullet) 
+    //     {
+    //         bullet.fire(this.ennemi.x, this.ennemi.y);
+
+    //         lastFired = time + 50;
+    //     }
+    // }
+    }
 }
 
-update(){}
-}
-var config = {
-type: Phaser.CANVAS,
-width: 800, height: 600,
-physics: {
-default: 'arcade',
-arcade: {
-gravity: { y: 300 },
-debug: false
-}},
-scene: Example
+const config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    parent: 'phaser-example',
+    physics: {
+        default: 'arcade',
+        arcade: {
+            debug: false,
+            gravity: { y: 0 }
+            
+        }
+    },
+    scene: Example
 };
+
 let game = new Phaser.Game(config);
+
 </script>
-<style type="text/css"> body { margin: 0; }</style>
-</head>
-<body>
-    <script type="text/javascript">
-    </script>
-    </body>
+</body>
 </html>
+
+//
