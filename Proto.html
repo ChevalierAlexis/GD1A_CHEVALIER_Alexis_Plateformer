@@ -152,12 +152,7 @@
                     this.player.setCollideWorldBounds(true);
                     this.test.setCollideWorldBounds(true);
 
-                    this.tir = this.physics.add.group();
-                    //this.tir = this.physics.add.sprite(this.ennemi.x,this.ennemi.y, 'bullet');
-                    //this.tir.setCollideWorldBounds(true);
-                    // this.tir.setBounce(1);   
-                    // this.physics.moveToObject(this.tir, this.ship,200)
-                    //this.bullets.setCollideWorldBounds(true);
+                    
     
                     this.physics.add.collider(this.player, this.platforms);
                     this.physics.add.collider(this.player, this.test);
@@ -249,17 +244,20 @@
 
                     this.ennemis1 = this.physics.add.group();
                     this.ennemi1 = this.physics.add.sprite(225,6000,'troll');
+                    this.ennemi1.agro = false
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.physics.add.collider(this.player,this.ennemis1, degat, null, this);
                     this.physics.add.collider(this.ennemis1, sol);
 
                     this.ennemis2 = this.physics.add.group();
-                    this.ennemi2 = this.physics.add.sprite(225,6000,'troll');
+                    this.ennemi2 = this.physics.add.sprite(300,6000,'troll');
+                    this.ennemi2.agro = false
                     this.ennemis2.add(this.ennemi2);
                     this.ennemis2.enableBody = true
                     this.physics.add.collider(this.player,this.ennemis2, degat, null, this);
                     this.physics.add.collider(this.ennemis2, sol);
+                    this.physics.add.collider(this.player, this.tir);
 
 
                     // this.ennemi1 = this.physics.add.sprite(200,200,'troll');
@@ -311,8 +309,19 @@
                         this.tir.destroy();
                     }
 
-                    this.ennemi2.children.iterate(function (child){
-                        
+                    this.ennemis2.children.iterate(function (child){
+                        if (this.ennemi2.x<this.player.x){
+                            this.ennemi2.agro = true
+                        }
+
+                        if (this.ennemi2.agro == true){
+                            this.tir = this.physics.add.group();
+                            this.tir = this.physics.add.sprite(this.ennemi.x,this.ennemi.y, 'bullet');
+                            this.tir.setCollideWorldBounds(true);
+                            this.tir.setBounce(1);   
+                            this.physics.moveToObject(this.tir, this.ship,200)
+                            this.bullets.setCollideWorldBounds(true);
+                        }
                     },this)
 
 
@@ -357,7 +366,7 @@
                     player.anims.play('turn');
                     gameOver = true;
                 }
-                function superposition(test, platforms, pointer){
+                function superposition(test, platforms){
                     this.pointer.setDragState(this.pointer, 0);
                     test.x = this.memx;
                     test.y = this.memy;
