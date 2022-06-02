@@ -133,7 +133,7 @@
         {
          "draworder":"topdown",
          "id":3,
-         "name":"Ennemis",
+         "name":"Ennemis1",
          "objects":[
                 {
                  "height":0,
@@ -190,7 +190,7 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":6,
+ "nextobjectid":7,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.8.5",
