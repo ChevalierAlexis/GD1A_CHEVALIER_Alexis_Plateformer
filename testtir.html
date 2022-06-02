@@ -119,6 +119,9 @@ class Example extends Phaser.Scene
         var isDown = false;
         var mouseX = 0;
         var mouseY = 0;
+        var bActive = false;
+        var nbRebond = 0;
+
 
         // this.bullets = new Bullets(this);
 
@@ -127,6 +130,8 @@ class Example extends Phaser.Scene
 
         this.tir = this.physics.add.group();
         this.tir = this.physics.add.sprite(this.ennemi.x,this.ennemi.y, 'bullet');
+        this.tir.setCollideWorldBounds(true);
+        this.tir.setBounce(1);
         this.physics.moveToObject(this.tir, this.ship,200)
 
         this.input.on('pointermove', (pointer) => {

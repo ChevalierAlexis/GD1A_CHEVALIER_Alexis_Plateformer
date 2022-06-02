@@ -22,7 +22,10 @@
                 { frameWidth: 64, frameHeight: 64 });
                 this.load.spritesheet('perso','assets/Chad.png',
                 { frameWidth: 64, frameHeight: 64 });
+                this.load.image("tileset", "assets/tilesetblock.png");
+                this.load.tilemapTiledJSON("map", "maptest.json");
                 }
+                
                 create(){
                     this.add.image(400, 300, 'sky');
                     this.platforms = this.physics.add.staticGroup();
@@ -31,70 +34,70 @@
                     this.platforms.create(50, 250, 'ground');
                     this.platforms.create(750, 220, 'ground');
 
-                    this.player = this.physics.add.sprite(100, 450, 'perso');
+                    this.player = this.physics.add.sprite(128, 6100, 'perso');
 
-                    class Bullet extends Phaser.Physics.Arcade.Sprite
-                        {
-                            constructor (scene, x, y)
-                            {
-                                super(scene, x, y, 'bullet');
-                            }
-                            Bullet (scene)
-                            {
-                                this.incX = 0;
-                                this.incY = 0;
-                                this.lifespan = 0;
+                    // class Bullet extends Phaser.Physics.Arcade.Sprite
+                    //     {
+                    //         constructor (scene, x, y)
+                    //         {
+                    //             super(scene, x, y, 'bullet');
+                    //         }
+                    //         Bullet (scene)
+                    //         {
+                    //             this.incX = 0;
+                    //             this.incY = 0;
+                    //             this.lifespan = 0;
                                 
-                                this.speed = Phaser.Math.GetSpeed(600, 1);
-                            }
-                            fire (x, y,px,py)
-                            {
-                                this.body.reset(x, y);
-                                this.setActive(true);
-                                this.setVisible(true);
-                                this.setCollideWorldBounds(true);
-                                this.setBounce(1);
-                                this.angle = 3.1375//Phaser.Math.Angle.Between(x, y, px, py);
+                    //             this.speed = Phaser.Math.GetSpeed(600, 1);
+                    //         }
+                    //         fire (x, y,px,py)
+                    //         {
+                    //             this.body.reset(x, y);
+                    //             this.setActive(true);
+                    //             this.setVisible(true);
+                    //             this.setCollideWorldBounds(true);
+                    //             this.setBounce(1);
+                    //             this.angle = 3.1375//Phaser.Math.Angle.Between(x, y, px, py);
 
-                                this.setRotation(this.angle);
+                    //             this.setRotation(this.angle);
                                 
                               
-                                this.incX = Math.cos(this.angle);
-                                this.incY = Math.sin(this.angle);
-                                this.lifespan = 1000;
+                    //             this.incX = Math.cos(this.angle);
+                    //             this.incY = Math.sin(this.angle);
+                    //             this.lifespan = 1000;
                                 
-                            }
+                    //         }
                         
-                            update (time, delta)
-                            {
-                                super.update(time, delta);
-                                this.lifespan -= delta;
-                                this.x -= this.incX * (this.speed * delta);
-                                this.y -= this.incY * (this.speed * delta);
-                                if (this.lifespan <= 0)
-                                {
-                                    this.setActive(false);
-                                    this.setVisible(false);
+                    //         update (time, delta)
+                    //         {
+                    //             super.update(time, delta);
+                    //             this.lifespan -= delta;
+                    //             this.x -= this.incX * (this.speed * delta);
+                    //             this.y -= this.incY * (this.speed * delta);
+                    //             if (this.lifespan <= 0)
+                    //             {
+                    //                 this.setActive(false);
+                    //                 this.setVisible(false);
                                     
-                                }
-                            }
-                        }
-                        class Bullets extends Phaser.Physics.Arcade.Group
-                        {
-                            constructor (scene)
-                            {
-                                super(scene.physics.world, scene);
-                                this.createMultiple({
-                                    frameQuantity: 1,
-                                    key: 'bullet',
-                                    active: true,
-                                    visible: true,
-                                    allowGravity : false,
-                                    CollideWorldBounds: true,
-                                    runChildUpdate: true,
-                                    classType: Bullet
-                                });
-                            }
+                    //             }
+                    //         }
+                    //     }
+                        // class Bullets extends Phaser.Physics.Arcade.Group
+                        // {
+                        //     constructor (scene)
+                        //     {
+                        //         super(scene.physics.world, scene);
+                        //         this.createMultiple({
+                        //             frameQuantity: 1,
+                        //             key: 'bullet',
+                        //             active: true,
+                        //             visible: true,
+                        //             allowGravity : false,
+                        //             CollideWorldBounds: true,
+                        //             runChildUpdate: true,
+                        //             classType: Bullet
+                        //         });
+                        //     }
                         //     fireBullet (x, y)
                         //     {
                         //         // let bullet = this.getFirstDead(false);
@@ -103,7 +106,7 @@
                         //             bullet.fire(x, y);
                         //         }
                         //     }
-                        }
+                        // }
                     
                     this.over=false;
                     this.score = 0;
@@ -112,12 +115,28 @@
                     this.speed;
                     this.stats;
                     this.lastFired = 0;
-                    this.bullets = new Bullets(this);
+                    // this.bullets = new Bullets(this);
                     this.pointer;
                     this.memx = 0;
                     this.memy = 0;
                     this.pv = 5;
+                    this.bActive = false;
+                    this.nbRebond = 0;
+
+                    const carteNiveau = this.add.tilemap("map");
+
+                    const tileset = carteNiveau.addTilesetImage(
+                        "tilesetblock",
+                        "tileset"
+                    )
+
+                    const sol = carteNiveau.createLayer(
+                        "Blocs",
+                        tileset
+                    )
+                    sol.setCollisionByProperty({ solide: true });
                     
+
                     this.test = this.physics.add.sprite(400, 300, 'star').setInteractive();
                     this.test = this.physics.add.sprite(400, 300, 'star').setInteractive().setImmovable();
                     
@@ -132,12 +151,21 @@
                     this.cursors = this.input.keyboard.createCursorKeys();
                     this.player.setCollideWorldBounds(true);
                     this.test.setCollideWorldBounds(true);
+
+                    this.tir = this.physics.add.group();
+                    //this.tir = this.physics.add.sprite(this.ennemi.x,this.ennemi.y, 'bullet');
+                    //this.tir.setCollideWorldBounds(true);
+                    // this.tir.setBounce(1);   
+                    // this.physics.moveToObject(this.tir, this.ship,200)
                     //this.bullets.setCollideWorldBounds(true);
     
                     this.physics.add.collider(this.player, this.platforms);
                     this.physics.add.collider(this.player, this.test);
                     this.physics.add.collider(this.test, this.platforms);
-                    this.physics.add.collider(this.bullets, this.platforms);
+                    this.physics.add.collider(this.tir, this.platforms,rebond);
+                    this.physics.add.collider(this.tir,this.test, rebond);
+                    this.physics.add.collider(this.player, sol);
+                    // this.physics.add.collider(this.bullets, this.platforms);
                     
                     
                     // var Bullet = new Phaser.Class({
@@ -219,12 +247,13 @@
                         gameObject.y = dragY;
                     });
 
-                    this.ennemis = this.physics.add.group();
-                    this.ennemis.enableBody = true
-                    this.physics.add.collider(this.player,this.ennemis, degat, null, this);
+                    this.ennemis1 = this.physics.add.group();
+                    //this.carteNiveau.getObjectLayer('Ennemis1').objects.forEach((ennemis1)=>{})
+                    this.ennemis1.enableBody = true
+                    this.physics.add.collider(this.player,this.ennemis1, degat, null, this);
 
-                    this.ennemi = this.physics.add.sprite(200,200,'troll');
-                    this.ennemis.add(this.ennemi);
+                    this.ennemi1 = this.physics.add.sprite(200,200,'troll');
+                    this.ennemis1.add(this.ennemi1);
                     
                     
 
@@ -240,15 +269,15 @@
                     // }, this);
                     
                     // this.ennemi1 = this.ennemis.create(100,200,'troll');
-                    this.physics.add.collider(this.ennemis, this.platforms);
+                    this.physics.add.collider(this.ennemis1, this.platforms);
                     // this.physics.add.collider(this.player, this.ennemis, hitBomb, null, this);
                     this.physics.add.collider(this.platforms, this.bullets);
                     
                 };
                 
                 update(time,delta){
-                    console.log(this.memx)
-                    console.log(this.memy)
+                    //console.log(this.memx)
+                    //console.log(this.memy)
                     this.over=false
                     this.test.setVelocity(0);
                     if (this.gameOver){return;}
@@ -266,6 +295,10 @@
                     }
                     if (this.cursors.up.isDown && this.player.body.touching.down){
                     this.player.setVelocityY(-330); 
+                    }
+
+                    if (this.nbRebond>=3){
+
                     }
 
 
@@ -293,12 +326,12 @@
         
                 var config = {
                 type: Phaser.AUTO,
-                width: 1920, height: 1080,
+                width: 3200, height: 6400,
                 physics: {
                         default: 'arcade',
                         arcade: {
                             gravity: { y: 300 },
-                            debug: false
+                            debug: true
                         }},
                 scene: [sceneBase]
                 };
@@ -311,13 +344,13 @@
                     gameOver = true;
                 }
                 function superposition(test, platforms, pointer){
-                    // console.log(test)
-                    this.pointer.setDragState(this.pointer, 0);
+                    console.log(test)
+                    this.test.setDragState(this.pointer, 0);
                     test.x = this.memx;
                     test.y = this.memy;
                 }
 
-                function degat(player, ennemis){
+                function degat(player, ennemis1){
                     this.pv = this.pv-1
                     if (this.pv<=0){
                         hitBomb()
@@ -340,6 +373,10 @@
                     bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
                     bomb.allowGravity = false; 
                     }
+                }
+
+                function rebond (){
+                    this.nbRebond += 1
                 }
             </script>
         </body>
