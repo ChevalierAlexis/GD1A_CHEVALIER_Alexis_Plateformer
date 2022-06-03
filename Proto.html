@@ -157,54 +157,11 @@
     
                     this.physics.add.collider(this.player, this.platforms);
                     this.physics.add.collider(this.player, this.test);
-                    this.physics.add.collider(this.test, this.platforms);
-                    // this.physics.add.collider(this.tir, this.platforms,rebond);
-                    // this.physics.add.collider(this.tir,this.test, rebond);
+                    this.physics.add.collider(this.test, this.platforms)
                     this.physics.add.collider(this.player, sol);
                     // this.physics.add.collider(this.bullets, this.platforms);
                     
-                    
-                    // var Bullet = new Phaser.Class({
-                    //         Extends: Phaser.GameObjects.Image,
-                    //         initialize:
-                    //         function Bullet (sceneBase)
-                    //         {
-                    //             Phaser.GameObjects.Image.call(this, sceneBase, 0, 0, 'bullet1');
-                    //             this.incX = 0;
-                    //             this.incY = 0;
-                    //             this.lifespan = 0;
-                    //             this.speed = Phaser.Math.GetSpeed(600, 1);
-                    //         },
-                    //         fire: function (x, y)
-                    //         {
-                    //             this.setActive(true);
-                    //             this.setVisible(true);
-                    //             //  Bullets fire from the middle of the screen to the given x/y
-                    //             this.setPosition(400, 300);
-                    //             var angle = Phaser.Math.Angle.Between(x, y, 400, 300);
-                    //             this.setRotation(angle);
-                    //             this.incX = Math.cos(angle);
-                    //             this.incY = Math.sin(angle);
-                    //             this.lifespan = 1000;
-                    //         },
-                    //         update: function (time, delta)
-                    //         {
-                    //             this.lifespan -= delta;
-                    //             this.x -= this.incX * (this.speed * delta);
-                    //             this.y -= this.incY * (this.speed * delta);
-                    //             if (this.lifespan <= 0)
-                    //             {
-                    //                 this.setActive(false);
-                    //                 this.setVisible(false);
-                    //             }
-                    //         }
-                    //     });
-                    //     this.bullets = this.add.group({
-                    //         classType: Bullet,
-                    //         maxSize: 1,
-                    //         runChildUpdate: true,
-                    //         CollideWorldBounds: true
-                    //     });
+        
                         
                     this.anims.create({
                     key: 'left',
@@ -248,17 +205,25 @@
                     this.ennemi1.agro = false
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
                     this.physics.add.collider(this.player,this.ennemis1, degat, null, this);
                     this.physics.add.collider(this.ennemis1, sol);
 
                     this.ennemis2 = this.physics.add.group();
-                    this.ennemi2 = this.physics.add.sprite(300,6000,'troll');
+                    this.ennemi2 = this.physics.add.sprite(550,5800,'troll');
                     this.ennemi2.agro = false
                     this.ennemis2.add(this.ennemi2);
                     this.ennemis2.enableBody = true
+                    this.ennemi2.setPushable(false)
+                    this.tir = this.physics.add.group();
+                            
                     this.physics.add.collider(this.player,this.ennemis2, degat, null, this);
                     this.physics.add.collider(this.ennemis2, sol);
-                    this.physics.add.collider(this.player, this.tir);
+                    this.physics.add.collider(this.tir, this.player, degat, null, this);
+                    this.physics.add.collider(this.tir,sol, rebond, null, this);
+                    this.physics.add.collider(this.tir, this.platforms,rebond, null, this);
+                    this.physics.add.collider(this.tir,this.test, rebond, null, this);
+
 
 
                     // this.ennemi1 = this.physics.add.sprite(200,200,'troll');
@@ -307,23 +272,20 @@
                     }
 
                     if (this.nbRebond>=3){
-                        this.tir.destroy();
+                        this.balle.destroy();
                         this.bActive = false
                     }
 
                     this.ennemis2.children.iterate(function (child){
-                        if (this.ennemi2.x<this.player.x){
+                        if (this.ennemi2.x<this.player.x && this.bActive==false){
                             this.ennemi2.agro = true
-                        }
+                            this.balle = this.physics.add.sprite(this.ennemi2.x,this.ennemi2.y, 'bullet');
+                            this.tir.add(this.balle);
 
-                        if (this.ennemi2.agro == true && this.bActive == false){
-                            this.tir = this.physics.add.group();
-                            this.tir = this.physics.add.sprite(this.ennemi2.x,this.ennemi2.y, 'bullet');
                             this.bActive = true
-                            this.tir.setCollideWorldBounds(true);
-                            this.tir.setBounce(1);   
-                            this.physics.moveToObject(this.tir, this.player,200)
-                            this.tir.setCollideWorldBounds(true);
+                            this.balle.setBounce(1);   
+                            this.physics.moveToObject(this.balle, this.player,200)
+                            this.balle.setCollideWorldBounds(true);
                         }
                     },this)
 
@@ -380,7 +342,6 @@
                     if (this.invin == false)
                         this.pv = this.pv-1
                         this.invin = true
-                        console.log(this.pv)
                         this.player.alpha = 0.5
                         this.frameinvin = this.time.addEvent({
                             delay: 1500,
