@@ -116,12 +116,13 @@
                     this.stats;
                     this.lastFired = 0;
                     // this.bullets = new Bullets(this);
-                    this.pointer;
+                    this.mousePointer;
                     this.memx = 0;
                     this.memy = 0;
                     this.pv = 5;
                     this.bActive = false;
                     this.nbRebond = 0;
+                    this.invin = false;
 
                     const carteNiveau = this.add.tilemap("map");
 
@@ -157,8 +158,8 @@
                     this.physics.add.collider(this.player, this.platforms);
                     this.physics.add.collider(this.player, this.test);
                     this.physics.add.collider(this.test, this.platforms);
-                    this.physics.add.collider(this.tir, this.platforms,rebond);
-                    this.physics.add.collider(this.tir,this.test, rebond);
+                    // this.physics.add.collider(this.tir, this.platforms,rebond);
+                    // this.physics.add.collider(this.tir,this.test, rebond);
                     this.physics.add.collider(this.player, sol);
                     // this.physics.add.collider(this.bullets, this.platforms);
                     
@@ -284,8 +285,8 @@
                 };
                 
                 update(time,delta){
-                    console.log(this.player.x)
-                    console.log(this.player.y)
+                    // console.log(this.player.x)
+                    // console.log(this.player.y)
                     this.over=false
                     this.test.setVelocity(0);
                     if (this.gameOver){return;}
@@ -307,6 +308,7 @@
 
                     if (this.nbRebond>=3){
                         this.tir.destroy();
+                        this.bActive = false
                     }
 
                     this.ennemis2.children.iterate(function (child){
@@ -314,13 +316,14 @@
                             this.ennemi2.agro = true
                         }
 
-                        if (this.ennemi2.agro == true){
+                        if (this.ennemi2.agro == true && this.bActive == false){
                             this.tir = this.physics.add.group();
-                            this.tir = this.physics.add.sprite(this.ennemi.x,this.ennemi.y, 'bullet');
+                            this.tir = this.physics.add.sprite(this.ennemi2.x,this.ennemi2.y, 'bullet');
+                            this.bActive = true
                             this.tir.setCollideWorldBounds(true);
                             this.tir.setBounce(1);   
-                            this.physics.moveToObject(this.tir, this.ship,200)
-                            this.bullets.setCollideWorldBounds(true);
+                            this.physics.moveToObject(this.tir, this.player,200)
+                            this.tir.setCollideWorldBounds(true);
                         }
                     },this)
 
@@ -348,7 +351,7 @@
             }}
         
                 var config = {
-                type: Phaser.AUTO,
+                type: Phaser.CANVAS,
                 width: 3200, height: 6400,
                 physics: {
                         default: 'arcade',
@@ -367,13 +370,26 @@
                     gameOver = true;
                 }
                 function superposition(test, platforms){
-                    this.pointer.setDragState(this.pointer, 0);
+                    this.input.pointer.setDragState(this.input.pointer, 0);
                     test.x = this.memx;
                     test.y = this.memy;
                 }
 
                 function degat(player, ennemis1){
-                    this.pv = this.pv-1
+                    
+                    if (this.invin == false)
+                        this.pv = this.pv-1
+                        this.invin = true
+                        console.log(this.pv)
+                        this.player.alpha = 0.5
+                        this.frameinvin = this.time.addEvent({
+                            delay: 1500,
+                            callback: ()=>{
+                                this.invin = false
+                                this.player.alpha = 1;
+                            },
+                        loop: false})
+    
                     if (this.pv<=0){
                         hitBomb()
                     }
