@@ -18,15 +18,18 @@
                 this.load.image('star', 'assets/star.png');
                 this.load.image('bomb', 'assets/bomb.png');
                 this.load.image('bullet', 'assets/bullet.png');
+
                 this.load.spritesheet('troll','assets/troll.png',
                 { frameWidth: 64, frameHeight: 64 });
                 this.load.spritesheet('perso','assets/Chad.png',
                 { frameWidth: 64, frameHeight: 64 });
+
                 this.load.image("tileset", "assets/tilesetblock.png");
                 this.load.tilemapTiledJSON("map", "maptest.json");
                 }
                 
                 create(){
+
                     this.add.image(400, 300, 'sky');
                     this.platforms = this.physics.add.staticGroup();
                     this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
@@ -35,79 +38,6 @@
                     this.platforms.create(750, 220, 'ground');
                     this.cameras.main.centerOn(960,5920)
                     
-
-                    // class Bullet extends Phaser.Physics.Arcade.Sprite
-                    //     {
-                    //         constructor (scene, x, y)
-                    //         {
-                    //             super(scene, x, y, 'bullet');
-                    //         }
-                    //         Bullet (scene)
-                    //         {
-                    //             this.incX = 0;
-                    //             this.incY = 0;
-                    //             this.lifespan = 0;
-                                
-                    //             this.speed = Phaser.Math.GetSpeed(600, 1);
-                    //         }
-                    //         fire (x, y,px,py)
-                    //         {
-                    //             this.body.reset(x, y);
-                    //             this.setActive(true);
-                    //             this.setVisible(true);
-                    //             this.setCollideWorldBounds(true);
-                    //             this.setBounce(1);
-                    //             this.angle = 3.1375//Phaser.Math.Angle.Between(x, y, px, py);
-
-                    //             this.setRotation(this.angle);
-                                
-                              
-                    //             this.incX = Math.cos(this.angle);
-                    //             this.incY = Math.sin(this.angle);
-                    //             this.lifespan = 1000;
-                                
-                    //         }
-                        
-                    //         update (time, delta)
-                    //         {
-                    //             super.update(time, delta);
-                    //             this.lifespan -= delta;
-                    //             this.x -= this.incX * (this.speed * delta);
-                    //             this.y -= this.incY * (this.speed * delta);
-                    //             if (this.lifespan <= 0)
-                    //             {
-                    //                 this.setActive(false);
-                    //                 this.setVisible(false);
-                                    
-                    //             }
-                    //         }
-                    //     }
-                        // class Bullets extends Phaser.Physics.Arcade.Group
-                        // {
-                        //     constructor (scene)
-                        //     {
-                        //         super(scene.physics.world, scene);
-                        //         this.createMultiple({
-                        //             frameQuantity: 1,
-                        //             key: 'bullet',
-                        //             active: true,
-                        //             visible: true,
-                        //             allowGravity : false,
-                        //             CollideWorldBounds: true,
-                        //             runChildUpdate: true,
-                        //             classType: Bullet
-                        //         });
-                        //     }
-                        //     fireBullet (x, y)
-                        //     {
-                        //         // let bullet = this.getFirstDead(false);
-                        //         if (bullet)
-                        //         {
-                        //             bullet.fire(x, y);
-                        //         }
-                        //     }
-                        // }
-                    
                     this.over=false;
                     this.score = 0;
                     this.gameOver = false;
@@ -115,7 +45,6 @@
                     this.speed;
                     this.stats;
                     this.lastFired = 0;
-                    // this.bullets = new Bullets(this);
                     this.mousePointer;
                     this.memx = 0;
                     this.memy = 0;
@@ -135,7 +64,6 @@
                     this.keyS;
                     this.keyD;
                     this.keySpace;
-                    // this.camera.setBounds(960,510,960,5680)
                     
                     
 
@@ -161,7 +89,6 @@
                             
                     this.player = this.physics.add.sprite(110,5800, 'perso');
 
-                    // this.test = this.physics.add.sprite(400, 300, 'star').setInteractive();
                     this.test = this.physics.add.sprite(1280, 6200, 'star').setInteractive().setImmovable();
                     
                     this.test.body.allowGravity=false;
@@ -178,10 +105,6 @@
                     this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
                     this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
                     this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);         
-                    // this.cursors = this.input.keyboard.addKeys('Z,Q,S,D,SPACE');
-                    // this.cursors = this.input.keyboard.createCursorKeys();
-                    // this.player.setCollideWorldBounds(true);
-                    // this.test.setCollideWorldBounds(true);
 
                     
     
@@ -190,8 +113,6 @@
                     this.physics.add.collider(this.test, this.platforms)
                     this.physics.add.collider(this.player, sol);
                     this.physics.add.collider(this.test, sol);
-
-                    // this.physics.add.collider(this.bullets, this.platforms);
                     
         
                         
@@ -233,7 +154,6 @@
                         gameObject.y = dragY;
                     });
 
-                    
 
                     this.ennemis1 = this.physics.add.group();
                     this.ennemi1 = this.physics.add.sprite(700,5800,'troll');
@@ -289,29 +209,6 @@
                     this.physics.add.collider(this.ennemis1, sol);
                     this.physics.add.collider(this.ennemis1, this.test);
                     this.physics.add.collider(this.ennemis1, this.platforms);
-
-
-
-                    // this.ennemi1 = this.physics.add.sprite(200,200,'troll');
-                    // this.ennemis1.add(this.ennemi1);
-                    
-                    
-
-                    // this.ennemis = this.physics.add.group({
-                    //     CollideWorldBounds: true,
-                    //     key:'ennemi'
-                        
-                    // });
-                    // this.ennemis.enableBody = true
-                    
-                    // this.ennemis.children.each(function() {
-                    //     enemy.speed = Math.random() * 2 + 1;
-                    // }, this);
-                    
-                    // this.ennemi1 = this.ennemis.create(100,200,'troll');
-                    
-                    // this.physics.add.collider(this.player, this.ennemis, hitBomb, null, this);
-                    // this.physics.add.collider(this.platforms, this.bullets);
                     
                 };
                 
@@ -389,27 +286,6 @@
                         child.setVelocityY(-100)
                     },this)
 
-
-                    // if((this.ennemi1.x+this.player.x)-200<=0 && time > this.lastFired)
-                    //     // this.bullets.fireBullet(this.player.x, this.player.y);
-                    //     this.bullet = this.bullets.get();
-                    //     if (this.bullet)
-                    //     {
-                    //         this.bullet.fire(this.ennemi1.x, this.ennemi1.y, this.player.x, this.player.y);
-                    //         this.lastFired = time + 3000;
-                    //     }
-                    //     }
-            
-            //         {   
-            //             var bullet = this.bullets.get();
-            //             if (bullet)
-            //             {
-            //                 bullet.fire(this.player.x, this.player.y);
-            //                 this.lastFired = this.time + 50;
-            //             }
-            //         }
-            //     };
-            // }
             }}
         
                 var config = {
