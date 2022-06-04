@@ -54,7 +54,7 @@
                     this.invin = false;
                     this.palier1 = false
                     this.palier1f = false
-                    this.palier2 = false
+                    this.palier2 = true
                     this.palier2f = false
                     this.palier3 = false
                     this.palier3f = false
@@ -89,7 +89,7 @@
                             
                     this.player = this.physics.add.sprite(110,5800, 'perso');
 
-                    this.test = this.physics.add.sprite(1280, 6200, 'star').setInteractive().setImmovable();
+                    this.test = this.physics.add.sprite(1280, 5000, 'star').setInteractive().setImmovable();
                     
                     this.test.body.allowGravity=false;
                     this.test.on('pointerover', function () {
@@ -250,12 +250,28 @@
                         this.palier1 = true
                     }
 
-                    if (this.palier1 == true && this.palier1f == false){
+                    if (this.player.y<4540){
+                        this.palier2 = true
+                        this.palier1= false
+                        console.log("up")
+                    }
+
+                    if (this.palier2 == true && this.palier2f == false){
+                        this.cameras.main.centerOn(960,4060)
+                        this.player.setX(1580)
+                        this.player.setY(4440)
+                        this.palier2f=true
+                    }
+                    else if (this.palier1 == true && this.palier1f == false){
                         this.cameras.main.centerOn(960,5000)
                         this.player.setX(1580)
                         this.player.setY(5400)
                         this.palier1f=true
                     }
+
+
+
+                    
 
                     this.ennemis1.children.iterate(function (child){
                         child.setVelocityX(100)
