@@ -33,8 +33,8 @@
                     this.platforms.create(600, 400, 'ground');
                     this.platforms.create(50, 250, 'ground');
                     this.platforms.create(750, 220, 'ground');
-
-                    this.player = this.physics.add.sprite(128, 6100, 'perso');
+                    this.cameras.main.centerOn(960,5920)
+                    
 
                     // class Bullet extends Phaser.Physics.Arcade.Sprite
                     //     {
@@ -123,6 +123,22 @@
                     this.bActive = false;
                     this.nbRebond = 0;
                     this.invin = false;
+                    this.palier1 = false
+                    this.palier1f = false
+                    this.palier2 = false
+                    this.palier2f = false
+                    this.palier3 = false
+                    this.palier3f = false
+                    
+                    this.keyZ;
+                    this.keyQ;
+                    this.keyS;
+                    this.keyD;
+                    this.keySpace;
+                    // this.camera.setBounds(960,510,960,5680)
+                    
+                    
+
 
                     const carteNiveau = this.add.tilemap("map");
 
@@ -137,21 +153,35 @@
                     )
                     sol.setCollisionByProperty({ solide: true });
 
+                    const border = carteNiveau.createLayer(
+                        "Border",
+                        tileset
+                    )
+                    border.setCollisionByProperty({ solide: true });
+                            
+                    this.player = this.physics.add.sprite(110,5800, 'perso');
 
-                    this.test = this.physics.add.sprite(400, 300, 'star').setInteractive();
-                    this.test = this.physics.add.sprite(400, 300, 'star').setInteractive().setImmovable();
+                    // this.test = this.physics.add.sprite(400, 300, 'star').setInteractive();
+                    this.test = this.physics.add.sprite(1280, 6200, 'star').setInteractive().setImmovable();
                     
                     this.test.body.allowGravity=false;
                     this.test.on('pointerover', function () {
-                        this.setTint(0x00ff00);
+                        this.setTint(0x000000);
                     });
                     this.test.on('pointerout', function () {
                         this.clearTint();
                     });
                     this.input.setDraggable(this.test);
-                    this.cursors = this.input.keyboard.createCursorKeys();
-                    this.player.setCollideWorldBounds(true);
-                    this.test.setCollideWorldBounds(true);
+
+                    this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+                    this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+                    this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+                    this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+                    this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);         
+                    // this.cursors = this.input.keyboard.addKeys('Z,Q,S,D,SPACE');
+                    // this.cursors = this.input.keyboard.createCursorKeys();
+                    // this.player.setCollideWorldBounds(true);
+                    // this.test.setCollideWorldBounds(true);
 
                     
     
@@ -159,6 +189,8 @@
                     this.physics.add.collider(this.player, this.test);
                     this.physics.add.collider(this.test, this.platforms)
                     this.physics.add.collider(this.player, sol);
+                    this.physics.add.collider(this.test, sol);
+
                     // this.physics.add.collider(this.bullets, this.platforms);
                     
         
@@ -191,7 +223,8 @@
                     });
                     this.physics.add.collider(this.stars, this.platforms);
                     this.physics.add.overlap(this.player, this.stars, collectStar, null, this);
-                    this.physics.add.overlap(this.test, this.platforms, superposition,null,this);
+                    // this.physics.add.overlap(this.test, this.platforms, superposition,null,this);
+                    // this.physics.add.overlap(this.test, sol, superposition,null,this);
                     this.bombs = this.physics.add.group();
                     this.physics.add.collider(this.bombs, this.platforms);
 
@@ -200,29 +233,62 @@
                         gameObject.y = dragY;
                     });
 
+                    
+
                     this.ennemis1 = this.physics.add.group();
-                    this.ennemi1 = this.physics.add.sprite(225,6000,'troll');
+                    this.ennemi1 = this.physics.add.sprite(700,5800,'troll');
                     this.ennemi1.agro = false
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
-                    this.physics.add.collider(this.player,this.ennemis1, degat, null, this);
-                    this.physics.add.collider(this.ennemis1, sol);
 
+                    this.ennemi1 = this.physics.add.sprite(320,5800,'troll');
+                    this.ennemi1.agro = false
+                    this.ennemis1.add(this.ennemi1);
+                    this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
+
+                    this.physics.add.collider(this.player,this.ennemis1, mort, null, this);
+                    this.physics.add.collider(this.ennemis1, sol);
+                    this.physics.add.collider(this.ennemis1, this.test);
+                    this.physics.add.collider(this.ennemis1, border);
+
+
+                    
                     this.ennemis2 = this.physics.add.group();
-                    this.ennemi2 = this.physics.add.sprite(550,5800,'troll');
+                    this.ennemi2 = this.physics.add.sprite(200,6000,'troll');
                     this.ennemi2.agro = false
                     this.ennemis2.add(this.ennemi2);
                     this.ennemis2.enableBody = true
                     this.ennemi2.setPushable(false)
                     this.tir = this.physics.add.group();
+                    this.tir.enableBody = true
+                    this.tir.allowGravity=false
                             
-                    this.physics.add.collider(this.player,this.ennemis2, degat, null, this);
+                    this.physics.add.collider(this.player,this.ennemis2, mort, null, this);
                     this.physics.add.collider(this.ennemis2, sol);
-                    this.physics.add.collider(this.tir, this.player, degat, null, this);
+                    this.physics.add.collider(this.ennemis2, this.test);
+                    this.physics.add.collider(this.tir, this.player, mort, null, this);
                     this.physics.add.collider(this.tir,sol, rebond, null, this);
                     this.physics.add.collider(this.tir, this.platforms,rebond, null, this);
                     this.physics.add.collider(this.tir,this.test, rebond, null, this);
+
+
+                    this.ennemis3 = this.physics.add.group();
+                    this.ennemi3 = this.physics.add.sprite(200,6000,'troll');
+                    this.ennemi3.agro = false
+                    this.ennemis3.add(this.ennemi3);
+                    this.ennemis3.enableBody = true
+                    this.ennemis3.allowGravity=false
+                    this.ennemi3.setPushable(false)
+                    this.tir = this.physics.add.group();
+                    this.tir.enableBody = true
+                    this.tir.allowGravity=false
+
+                    this.physics.add.collider(this.player,this.ennemis1, mort, null, this);
+                    this.physics.add.collider(this.ennemis1, sol);
+                    this.physics.add.collider(this.ennemis1, this.test);
+                    this.physics.add.collider(this.ennemis1, this.platforms);
 
 
 
@@ -243,9 +309,9 @@
                     // }, this);
                     
                     // this.ennemi1 = this.ennemis.create(100,200,'troll');
-                    this.physics.add.collider(this.ennemis1, this.platforms);
+                    
                     // this.physics.add.collider(this.player, this.ennemis, hitBomb, null, this);
-                    this.physics.add.collider(this.platforms, this.bullets);
+                    // this.physics.add.collider(this.platforms, this.bullets);
                     
                 };
                 
@@ -255,38 +321,72 @@
                     this.over=false
                     this.test.setVelocity(0);
                     if (this.gameOver){return;}
-                    if (this.cursors.left.isDown){ 
+
+                    if (this.keyQ.isDown){
                         this.player.setVelocityX(-160);
-                        // this.player.anims.play('left', true);
                     }
-                    else if (this.cursors.right.isDown){ 
+
+                    else if (this.keyD.isDown) {
                         this.player.setVelocityX(160); 
-                        // this.player.anims.play('right', true); 
                     }
+                    
                     else{
                         this.player.setVelocityX(0);
                         // this.player.anims.play('turn'); 
                     }
-                    if (this.cursors.up.isDown && this.player.body.onFloor()){
-                    this.player.setVelocityY(-330); 
+
+                    if (this.keyZ.isDown && this.player.body.onFloor()) {
+                            this.player.setVelocityY(-225);  
                     }
 
-                    if (this.nbRebond>=3){
+                    if (this.keySpace.isDown) {
+                        
+                    }
+                    
+
+                    if (this.nbRebond>=300){
                         this.balle.destroy();
                         this.bActive = false
                     }
 
+                    if (this.player.y<5500){
+                        this.palier1 = true
+                    }
+
+                    if (this.palier1 == true && this.palier1f == false){
+                        this.cameras.main.centerOn(960,5000)
+                        this.player.setX(1580)
+                        this.player.setY(5400)
+                        this.palier1f=true
+                    }
+
+                    this.ennemis1.children.iterate(function (child){
+                        child.setVelocityX(100)
+                        child.setBounceX(1)
+                        // console.log(child.body.blocked.right)
+                        // if (child.body.blocked.right==true){
+                        //     child.setVelocityX(-100)
+                        // }
+                        // if (child.body.blocked.left==true){
+                        //     child.setVelocityX(100)
+                        // }
+                    },this)
+
                     this.ennemis2.children.iterate(function (child){
-                        if (this.ennemi2.x<this.player.x && this.bActive==false){
-                            this.ennemi2.agro = true
+                        while (child.x<this.player.x && this.bActive==false){
+                            child.agro = true
                             this.balle = this.physics.add.sprite(this.ennemi2.x,this.ennemi2.y, 'bullet');
                             this.tir.add(this.balle);
-
+                            
                             this.bActive = true
                             this.balle.setBounce(1);   
                             this.physics.moveToObject(this.balle, this.player,200)
                             this.balle.setCollideWorldBounds(true);
                         }
+                    },this)
+
+                    this.ennemis3.children.iterate(function (child){
+                        child.setVelocityY(-100)
                     },this)
 
 
@@ -314,7 +414,7 @@
         
                 var config = {
                 type: Phaser.CANVAS,
-                width: 3200, height: 6400,
+                width: 1920, height: 940, //,940
                 physics: {
                         default: 'arcade',
                         arcade: {
@@ -325,36 +425,48 @@
                 };
                 new Phaser.Game(config);
 
-                function hitBomb(player, bomb){
-                    this.physics.pause();
-                    player.setTint(0xff0000);
-                    player.anims.play('turn');
-                    gameOver = true;
+                function mort(player){
+                    if (palier3==true){
+                        this.player.setX(1580)
+                        this.player.setY(5400)
+                    }
+                    else if (palier2==true){
+                        this.player.setX(1580)
+                        this.player.setY(5400)
+                    }
+                    else if (palier1==true){
+                        this.player.setX(1580)
+                        this.player.setY(5400)
+                    }
+                    else{
+                        this.player.setX(110)
+                        this.player.setY(5800)
+                    }
                 }
                 function superposition(test, platforms){
-                    this.input.pointer.setDragState(this.input.pointer, 0);
+                    pointer1.setDragState(this.input.pointer, 0);
                     test.x = this.memx;
                     test.y = this.memy;
                 }
 
-                function degat(player, ennemis1){
+                // function degat(player, ennemis1){
                     
-                    if (this.invin == false)
-                        this.pv = this.pv-1
-                        this.invin = true
-                        this.player.alpha = 0.5
-                        this.frameinvin = this.time.addEvent({
-                            delay: 1500,
-                            callback: ()=>{
-                                this.invin = false
-                                this.player.alpha = 1;
-                            },
-                        loop: false})
+                //     if (this.invin == false)
+                //         this.pv = this.pv-1
+                //         this.invin = true
+                //         this.player.alpha = 0.5
+                //         this.frameinvin = this.time.addEvent({
+                //             delay: 1500,
+                //             callback: ()=>{
+                //                 this.invin = false
+                //                 this.player.alpha = 1;
+                //             },
+                //         loop: false})
     
-                    if (this.pv<=0){
-                        hitBomb()
-                    }
-                }
+                //     if (this.pv<=0){
+                //         hitBomb()
+                //     }
+                // }
 
                 function collectStar(player, star){
                     star.disableBody(true, true); 
@@ -376,6 +488,11 @@
 
                 function rebond (){
                     this.nbRebond += 1
+                }
+
+                function changeDir(){
+                    console.log("fesfes")
+                    this.ennemis1.setVelocityX(-100)
                 }
             </script>
         </body>
