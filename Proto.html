@@ -88,8 +88,8 @@
                     border.setCollisionByProperty({ solide: true });
                             
                     this.player = this.physics.add.sprite(110,5800, 'perso');
-
-                    this.test = this.physics.add.sprite(1280, 5000, 'star').setInteractive().setImmovable();
+                    
+                    this.test = this.physics.add.sprite(1300, 4900, 'star').setInteractive().setImmovable();
                     
                     this.test.body.allowGravity=false;
                     this.test.on('pointerover', function () {
@@ -99,6 +99,24 @@
                         this.clearTint();
                     });
                     this.input.setDraggable(this.test);
+                    this.physics.add.collider(this.player, this.test);
+                    this.physics.add.collider(this.test, this.platforms)
+                    this.physics.add.collider(this.test, sol);
+
+                    this.test2 = this.physics.add.sprite(800, 3875, 'star').setInteractive().setImmovable();
+                    
+                    this.test2.body.allowGravity=false;
+                    this.test2.on('pointerover', function () {
+                        this.setTint(0x000000);
+                    });
+                    this.test2.on('pointerout', function () {
+                        this.clearTint();
+                    });
+                    this.input.setDraggable(this.test2);
+                    this.physics.add.collider(this.player, this.test2);
+                    this.physics.add.collider(this.test2, this.platforms)
+                    this.physics.add.collider(this.test2, sol);
+
 
                     this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
                     this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
@@ -109,10 +127,9 @@
                     
     
                     this.physics.add.collider(this.player, this.platforms);
-                    this.physics.add.collider(this.player, this.test);
-                    this.physics.add.collider(this.test, this.platforms)
+
                     this.physics.add.collider(this.player, sol);
-                    this.physics.add.collider(this.test, sol);
+     
                     
         
                         
@@ -336,7 +353,7 @@
                     }
                 }
                 function superposition(test, platforms){
-                    pointer1.setDragState(this.input.pointer, 0);
+                    this.input.activePointer.setDragState(this.input.pointer, 0);
                     test.x = this.memx;
                     test.y = this.memy;
                 }
