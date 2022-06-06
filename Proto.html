@@ -18,8 +18,15 @@
                 this.load.image('star', 'assets/star.png');
                 this.load.image('bomb', 'assets/bomb.png');
                 this.load.image('bullet', 'assets/bullet.png');
+                this.load.image('PM', 'assets/PlateformeMov.png');
 
+                this.load.spritesheet('aerotroll','assets/aerotroll.png',
+                { frameWidth: 64, frameHeight: 86 });
                 this.load.spritesheet('troll','assets/troll.png',
+                { frameWidth: 64, frameHeight: 64 });
+                this.load.spritesheet('gattroll','assets/gattroll.png',
+                { frameWidth: 64, frameHeight: 64 });
+                this.load.spritesheet('trolleur_delite','assets/trolleur-delite.png',
                 { frameWidth: 64, frameHeight: 64 });
                 this.load.spritesheet('perso','assets/Chad.png',
                 { frameWidth: 64, frameHeight: 64 });
@@ -63,7 +70,7 @@
                     this.palier1f = false
                     this.palier2 = false
                     this.palier2f = false
-                    this.palier3 = true
+                    this.palier3 = false
                     this.palier3f = false
                     
                     this.keyZ;
@@ -88,20 +95,24 @@
                     )
                     sol.setCollisionByProperty({ solide: true });
 
-                    const border = carteNiveau.createLayer(
-                        "Border",
+                    const piques = carteNiveau.createLayer(
+                        "Piques",
                         tileset
                     )
-                    border.setCollisionByProperty({ solide: true });
+                    piques.setCollisionByProperty({ pique: true });
                             
-                    this.player = this.physics.add.sprite(110,5800, 'perso');
+                    this.player = this.physics.add.sprite(110,6000, 'perso');
 
                     this.poings = this.physics.add.sprite(this.player.x+30,this.player.y, 'punch');
                     this.poings.enableBody(true)
                     
                     this.poings.body.allowGravity=false;
+
+
+
+
                     
-                    this.test = this.physics.add.sprite(1300, 4900, 'star').setInteractive().setImmovable();
+                    this.test = this.physics.add.sprite(993, 5345, 'PM').setInteractive().setImmovable();
                     
                     this.test.body.allowGravity=false;
                     this.test.on('pointerover', function () {
@@ -115,7 +126,7 @@
                     this.physics.add.collider(this.test, this.platforms)
                     this.physics.add.collider(this.test, sol);
 
-                    this.test2 = this.physics.add.sprite(800, 3875, 'star').setInteractive().setImmovable();
+                    this.test2 = this.physics.add.sprite(800, 3875, 'PM').setInteractive().setImmovable();
                     
                     this.test2.body.allowGravity=false;
                     this.test2.on('pointerover', function () {
@@ -128,6 +139,208 @@
                     this.physics.add.collider(this.player, this.test2);
                     this.physics.add.collider(this.test2, this.platforms)
                     this.physics.add.collider(this.test2, sol);
+
+                    this.test3 = this.physics.add.sprite(1310, 6175, 'PM').setInteractive().setImmovable();
+                    
+                    this.test3.body.allowGravity=false;
+                    this.test3.on('pointerover', function () {
+                        this.setTint(0x000000);
+                    });
+                    this.test3.on('pointerout', function () {
+                        this.clearTint();
+                    });
+                    this.input.setDraggable(this.test3);
+                    this.physics.add.collider(this.player, this.test3);
+                    this.physics.add.collider(this.test3, this.platforms)
+                    this.physics.add.collider(this.test3, sol);
+
+                    this.test4 = this.physics.add.sprite(96, 5728, 'PM').setInteractive().setImmovable();
+                    
+                    this.test4.body.allowGravity=false;
+                    this.test4.on('pointerover', function () {
+                        this.setTint(0x000000);
+                    });
+                    this.test4.on('pointerout', function () {
+                        this.clearTint();
+                    });
+                    this.input.setDraggable(this.test4);
+                    this.physics.add.collider(this.player, this.test4);
+                    this.physics.add.collider(this.test4, this.platforms)
+                    this.physics.add.collider(this.test4, sol);
+
+                    this.test5 = this.physics.add.sprite(1057, 5600, 'PM').setInteractive().setImmovable();
+                    
+                    this.test5.body.allowGravity=false;
+                    this.test5.on('pointerover', function () {
+                        this.setTint(0x000000);
+                    });
+                    this.test5.on('pointerout', function () {
+                        this.clearTint();
+                    });
+                    this.input.setDraggable(this.test5);
+                    this.physics.add.collider(this.player, this.test5);
+                    this.physics.add.collider(this.test5, this.platforms)
+                    this.physics.add.collider(this.test5, sol);
+
+                    this.test6 = this.physics.add.sprite(1825, 5447, 'PM').setInteractive().setImmovable();
+                    
+                    this.test6.body.allowGravity=false;
+                    this.test6.on('pointerover', function () {
+                        this.setTint(0x000000);
+                    });
+                    this.test6.on('pointerout', function () {
+                        this.clearTint();
+                    });
+                    this.input.setDraggable(this.test6);
+                    this.physics.add.collider(this.player, this.test6);
+                    this.physics.add.collider(this.test6, this.platforms)
+                    this.physics.add.collider(this.test6, sol);
+
+                    this.test7 = this.physics.add.sprite(865, 4832, 'PM').setInteractive().setImmovable();
+                    
+                    this.test7.body.allowGravity=false;
+                    this.test7.on('pointerover', function () {
+                        this.setTint(0x000000);
+                    });
+                    this.test7.on('pointerout', function () {
+                        this.clearTint();
+                    });
+                    this.input.setDraggable(this.test7);
+                    this.physics.add.collider(this.player, this.test7);
+                    this.physics.add.collider(this.test7, this.platforms)
+                    this.physics.add.collider(this.test7, sol);
+
+                    this.test8 = this.physics.add.sprite(1055, 4832, 'PM').setInteractive().setImmovable();
+                    
+                    this.test8.body.allowGravity=false;
+                    this.test8.on('pointerover', function () {
+                        this.setTint(0x000000);
+                    });
+                    this.test8.on('pointerout', function () {
+                        this.clearTint();
+                    });
+                    this.input.setDraggable(this.test8);
+                    this.physics.add.collider(this.player, this.test8);
+                    this.physics.add.collider(this.test8, this.platforms)
+                    this.physics.add.collider(this.test8, sol);
+
+                    this.test9 = this.physics.add.sprite(1505, 4832, 'PM').setInteractive().setImmovable();
+                    
+                    this.test9.body.allowGravity=false;
+                    this.test9.on('pointerover', function () {
+                        this.setTint(0x000000);
+                    });
+                    this.test9.on('pointerout', function () {
+                        this.clearTint();
+                    });
+                    this.input.setDraggable(this.test9);
+                    this.physics.add.collider(this.player, this.test9);
+                    this.physics.add.collider(this.test9, this.platforms)
+                    this.physics.add.collider(this.test9, sol);
+
+                    this.test10 = this.physics.add.sprite(1632, 4960, 'PM').setInteractive().setImmovable();
+                    
+                    this.test10.body.allowGravity=false;
+                    this.test10.on('pointerover', function () {
+                        this.setTint(0x000000);
+                    });
+                    this.test10.on('pointerout', function () {
+                        this.clearTint();
+                    });
+                    this.input.setDraggable(this.test10);
+                    this.physics.add.collider(this.player, this.test10);
+                    this.physics.add.collider(this.test10, this.platforms)
+                    this.physics.add.collider(this.test10, sol);
+
+                    this.test11 = this.physics.add.sprite(1760, 4832, 'PM').setInteractive().setImmovable();
+                    
+                    this.test11.body.allowGravity=false;
+                    this.test11.on('pointerover', function () {
+                        this.setTint(0x000000);
+                    });
+                    this.test11.on('pointerout', function () {
+                        this.clearTint();
+                    });
+                    this.input.setDraggable(this.test11);
+                    this.physics.add.collider(this.player, this.test11);
+                    this.physics.add.collider(this.test11, this.platforms)
+                    this.physics.add.collider(this.test11, sol);
+
+                    this.test12 = this.physics.add.sprite(542, 3936, 'PM').setInteractive().setImmovable();
+                    
+                    this.test12.body.allowGravity=false;
+                    this.test12.on('pointerover', function () {
+                        this.setTint(0x000000);
+                    });
+                    this.test12.on('pointerout', function () {
+                        this.clearTint();
+                    });
+                    this.input.setDraggable(this.test12);
+                    this.physics.add.collider(this.player, this.test12);
+                    this.physics.add.collider(this.test12, this.platforms)
+                    this.physics.add.collider(this.test12, sol);
+
+                    this.test13 = this.physics.add.sprite(352, 3103, 'PM').setInteractive().setImmovable();
+                    
+                    this.test13.body.allowGravity=false;
+                    this.test13.on('pointerover', function () {
+                        this.setTint(0x000000);
+                    });
+                    this.test13.on('pointerout', function () {
+                        this.clearTint();
+                    });
+                    this.input.setDraggable(this.test13);
+                    this.physics.add.collider(this.player, this.test13);
+                    this.physics.add.collider(this.test13, this.platforms)
+                    this.physics.add.collider(this.test13, sol);
+
+                    this.test14 = this.physics.add.sprite(927, 3250, 'PM').setInteractive().setImmovable();
+                    
+                    this.test14.body.allowGravity=false;
+                    this.test14.on('pointerover', function () {
+                        this.setTint(0x000000);
+                    });
+                    this.test14.on('pointerout', function () {
+                        this.clearTint();
+                    });
+                    this.input.setDraggable(this.test14);
+                    this.physics.add.collider(this.player, this.test14);
+                    this.physics.add.collider(this.test14, this.platforms)
+                    this.physics.add.collider(this.test14, sol);
+
+                    this.test15 = this.physics.add.sprite(990, 3250, 'PM').setInteractive().setImmovable();
+                    
+                    this.test15.body.allowGravity=false;
+                    this.test15.on('pointerover', function () {
+                        this.setTint(0x000000);
+                    });
+                    this.test15.on('pointerout', function () {
+                        this.clearTint();
+                    });
+                    this.input.setDraggable(this.test15);
+                    this.physics.add.collider(this.player, this.test15);
+                    this.physics.add.collider(this.test15, this.platforms)
+                    this.physics.add.collider(this.test15, sol);
+
+                    this.test16 = this.physics.add.sprite(1568, 3105, 'PM').setInteractive().setImmovable();
+                    
+                    this.test16.body.allowGravity=false;
+                    this.test16.on('pointerover', function () {
+                        this.setTint(0x000000);
+                    });
+                    this.test16.on('pointerout', function () {
+                        this.clearTint();
+                    });
+                    this.input.setDraggable(this.test16);
+                    this.physics.add.collider(this.player, this.test16);
+                    this.physics.add.collider(this.test16, this.platforms)
+                    this.physics.add.collider(this.test16, sol);
+
+
+
+
+
+
 
 
                     this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
@@ -186,26 +399,177 @@
 
                     this.ennemis1 = this.physics.add.group();
                     this.ennemi1 = this.physics.add.sprite(700,5800,'troll');
+                    this.ennemi1.plat = 5
+                    this.ennemi1.dir = "D"
+                    this.ennemi1.spawnx = 700
                     this.ennemi1.agro = false
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
 
-                    this.ennemi1 = this.physics.add.sprite(320,5800,'troll');
+                    this.ennemi1 = this.physics.add.sprite(400,5800,'troll'); 
+                    this.ennemi1.plat = 2 
+                    this.ennemi1.spawnx = 1700
                     this.ennemi1.agro = false
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
+
+                    this.ennemi1 = this.physics.add.sprite(1057,5530,'troll'); 
+                    this.ennemi1.plat = 2 
+                    this.ennemi1.spawnx = 1700
+                    this.ennemi1.agro = false
+                    this.ennemis1.add(this.ennemi1);
+                    this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
+
+                    this.ennemi1 = this.physics.add.sprite(700,5600,'troll'); 
+                    this.ennemi1.plat = 2 
+                    this.ennemi1.spawnx = 1700
+                    this.ennemi1.agro = false
+                    this.ennemis1.add(this.ennemi1);
+                    this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
+
+                    this.ennemi1 = this.physics.add.sprite(1250,5400,'troll'); 
+                    this.ennemi1.plat = 2 
+                    this.ennemi1.spawnx = 1700
+                    this.ennemi1.agro = false
+                    this.ennemis1.add(this.ennemi1);
+                    this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
+
+                    this.ennemi1 = this.physics.add.sprite(800,5400,'troll'); 
+                    this.ennemi1.plat = 2 
+                    this.ennemi1.spawnx = 1700
+                    this.ennemi1.agro = false
+                    this.ennemis1.add(this.ennemi1);
+                    this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
+
+                    this.ennemi1 = this.physics.add.sprite(800,5200,'troll'); 
+                    this.ennemi1.plat = 2 
+                    this.ennemi1.spawnx = 1700
+                    this.ennemi1.agro = false
+                    this.ennemis1.add(this.ennemi1);
+                    this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
+
+                    this.ennemi1 = this.physics.add.sprite(230,5250,'troll'); 
+                    this.ennemi1.plat = 2 
+                    this.ennemi1.spawnx = 1700
+                    this.ennemi1.agro = false
+                    this.ennemis1.add(this.ennemi1);
+                    this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
+
+                    this.ennemi1 = this.physics.add.sprite(1400,4900,'troll'); 
+                    this.ennemi1.plat = 2 
+                    this.ennemi1.spawnx = 1700
+                    this.ennemi1.agro = false
+                    this.ennemis1.add(this.ennemi1);
+                    this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
+
+                    this.ennemi1 = this.physics.add.sprite(1760,4750,'troll'); 
+                    this.ennemi1.plat = 2 
+                    this.ennemi1.spawnx = 1700
+                    this.ennemi1.agro = false
+                    this.ennemis1.add(this.ennemi1);
+                    this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
+
+                    this.ennemi1 = this.physics.add.sprite(1550,4650,'troll'); 
+                    this.ennemi1.plat = 2 
+                    this.ennemi1.spawnx = 1700
+                    this.ennemi1.agro = false
+                    this.ennemis1.add(this.ennemi1);
+                    this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
+
+                    this.ennemi1 = this.physics.add.sprite(1565,3175,'troll'); 
+                    this.ennemi1.plat = 2 
+                    this.ennemi1.spawnx = 1700
+                    this.ennemi1.agro = false
+                    this.ennemis1.add(this.ennemi1);
+                    this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
+
+                    this.ennemi1 = this.physics.add.sprite(350,3175,'troll'); 
+                    this.ennemi1.plat = 2 
+                    this.ennemi1.spawnx = 1700
+                    this.ennemi1.agro = false
+                    this.ennemis1.add(this.ennemi1);
+                    this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
+
+                    this.ennemi1 = this.physics.add.sprite(960,3175,'troll'); 
+                    this.ennemi1.plat = 2 
+                    this.ennemi1.spawnx = 1700
+                    this.ennemi1.agro = false
+                    this.ennemis1.add(this.ennemi1);
+                    this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
+
+                    this.ennemi1 = this.physics.add.sprite(960,3050,'troll'); 
+                    this.ennemi1.plat = 2 
+                    this.ennemi1.spawnx = 1700
+                    this.ennemi1.agro = false
+                    this.ennemis1.add(this.ennemi1);
+                    this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
+
+                    this.ennemi1 = this.physics.add.sprite(700,3250,'troll'); 
+                    this.ennemi1.plat = 2 
+                    this.ennemi1.spawnx = 1700
+                    this.ennemi1.agro = false
+                    this.ennemis1.add(this.ennemi1);
+                    this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
+
+                    this.ennemi1 = this.physics.add.sprite(480,3335,'troll'); 
+                    this.ennemi1.plat = 2 
+                    this.ennemi1.spawnx = 1700
+                    this.ennemi1.agro = false
+                    this.ennemis1.add(this.ennemi1);
+                    this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
+
+                    this.ennemi1 = this.physics.add.sprite(1185,3335,'troll'); 
+                    this.ennemi1.plat = 2 
+                    this.ennemi1.spawnx = 1700
+                    this.ennemi1.agro = false
+                    this.ennemis1.add(this.ennemi1);
+                    this.ennemis1.enableBody = true
+                    this.ennemi1.setPushable(false)
+
+
+
 
                     this.physics.add.collider(this.player,this.ennemis1, mort, null, this);
                     this.physics.add.collider(this.ennemis1, sol);
+                    this.physics.add.collider(this.ennemis1, piques, paf, null, this);
                     this.physics.add.collider(this.ennemis1, this.test);
-                    this.physics.add.collider(this.ennemis1, border);
+                    this.physics.add.collider(this.ennemis1, this.test2);
+                    this.physics.add.collider(this.ennemis1, this.test3);
+                    this.physics.add.collider(this.ennemis1, this.test4);
+                    this.physics.add.collider(this.ennemis1, this.test5);
+                    this.physics.add.collider(this.ennemis1, this.test6);
+                    this.physics.add.collider(this.ennemis1, this.test7);
+                    this.physics.add.collider(this.ennemis1, this.test8);
+                    this.physics.add.collider(this.ennemis1, this.test9);
+                    this.physics.add.collider(this.ennemis1, this.test10);
+                    this.physics.add.collider(this.ennemis1, this.test11);
+                    this.physics.add.collider(this.ennemis1, this.test12);
+                    this.physics.add.collider(this.ennemis1, this.test13);
+                    this.physics.add.collider(this.ennemis1, this.test14);
+                    this.physics.add.collider(this.ennemis1, this.test15);
+                    this.physics.add.collider(this.ennemis1, this.test16);
 
 
                     
                     this.ennemis2 = this.physics.add.group();
-                    this.ennemi2 = this.physics.add.sprite(200,6000,'troll');
+                    this.ennemi2 = this.physics.add.sprite(1180,4750,'trolleur_delite');
                     this.ennemi2.agro = false
                     this.ennemis2.add(this.ennemi2);
                     this.ennemis2.enableBody = true
@@ -213,10 +577,29 @@
                     this.tir = this.physics.add.group();
                     this.tir.enableBody = true
                     this.tir.allowGravity=false
+
+                    this.ennemi2 = this.physics.add.sprite(1760,4550,'trolleur_delite');
+                    this.ennemi2.agro = false
+                    this.ennemis2.add(this.ennemi2);
+                    this.ennemis2.enableBody = true
+                    this.ennemi2.setPushable(false)
+
+                    this.ennemi2 = this.physics.add.sprite(800,2850,'trolleur_delite');
+                    this.ennemi2.agro = false
+                    this.ennemis2.add(this.ennemi2);
+                    this.ennemis2.enableBody = true
+                    this.ennemi2.setPushable(false)
+
+                    this.ennemi2 = this.physics.add.sprite(1120,2850,'trolleur_delite');
+                    this.ennemi2.agro = false
+                    this.ennemis2.add(this.ennemi2);
+                    this.ennemis2.enableBody = true
+                    this.ennemi2.setPushable(false)
                             
                     this.physics.add.collider(this.player,this.ennemis2, mort, null, this);
                     this.physics.add.collider(this.ennemis2, sol);
                     this.physics.add.collider(this.ennemis2, this.test);
+                    this.physics.add.collider(this.ennemis2, piques);
                     this.physics.add.collider(this.tir, this.player, mort, null, this);
                     this.physics.add.collider(this.tir,sol, rebond, null, this);
                     this.physics.add.collider(this.tir, this.platforms,rebond, null, this);
@@ -224,20 +607,162 @@
 
 
                     this.ennemis3 = this.physics.add.group();
-                    this.ennemi3 = this.physics.add.sprite(200,6000,'troll');
+                    this.ennemi3 = this.physics.add.sprite(1300,5625,'aerotroll');
+                    this.ennemi3.spawny = 6000
+                    this.ennemi3.dir = 1
                     this.ennemi3.agro = false
                     this.ennemis3.add(this.ennemi3);
                     this.ennemis3.enableBody = true
                     this.ennemis3.allowGravity=false
                     this.ennemi3.setPushable(false)
-                    this.tir = this.physics.add.group();
-                    this.tir.enableBody = true
-                    this.tir.allowGravity=false
+                    this.ennemi3.setVelocityY(-1)
 
-                    this.physics.add.collider(this.player,this.ennemis1, mort, null, this);
-                    this.physics.add.collider(this.ennemis1, sol);
-                    this.physics.add.collider(this.ennemis1, this.test);
-                    this.physics.add.collider(this.ennemis1, this.platforms);
+                    this.ennemi3 = this.physics.add.sprite(1825,5500,'aerotroll');
+                    this.ennemi3.spawny = 6000
+                    this.ennemi3.dir = 1
+                    this.ennemi3.agro = false
+                    this.ennemis3.add(this.ennemi3);
+                    this.ennemis3.enableBody = true
+                    this.ennemi3.setPushable(false)
+                    this.ennemi3.setVelocityY(-1)
+
+                    this.ennemi3 = this.physics.add.sprite(990,5250,'aerotroll');
+                    this.ennemi3.spawny = 6000
+                    this.ennemi3.dir = 1
+                    this.ennemi3.agro = false
+                    this.ennemis3.add(this.ennemi3);
+                    this.ennemis3.enableBody = true
+                    this.ennemi3.setPushable(false)
+                    this.ennemi3.setVelocityY(-1)
+
+                    this.ennemi3 = this.physics.add.sprite(400,5000,'aerotroll');
+                    this.ennemi3.spawny = 6000
+                    this.ennemi3.dir = 1
+                    this.ennemi3.agro = false
+                    this.ennemis3.add(this.ennemi3);
+                    this.ennemis3.enableBody = true
+                    this.ennemi3.setPushable(false)
+                    this.ennemi3.setVelocityY(-1)
+
+                    this.ennemi3 = this.physics.add.sprite(1400,4800,'aerotroll');
+                    this.ennemi3.spawny = 6000
+                    this.ennemi3.dir = 1
+                    this.ennemi3.agro = false
+                    this.ennemis3.add(this.ennemi3);
+                    this.ennemis3.enableBody = true
+                    this.ennemi3.setPushable(false)
+                    this.ennemi3.setVelocityY(-1)
+
+                    this.ennemi3 = this.physics.add.sprite(1650,4800,'aerotroll');
+                    this.ennemi3.spawny = 6000
+                    this.ennemi3.dir = 1
+                    this.ennemi3.agro = false
+                    this.ennemis3.add(this.ennemi3);
+                    this.ennemis3.enableBody = true
+                    this.ennemi3.setPushable(false)
+                    this.ennemi3.setVelocityY(-1)
+
+                    this.ennemi3 = this.physics.add.sprite(1400,3200,'aerotroll');
+                    this.ennemi3.spawny = 6000
+                    this.ennemi3.dir = 1
+                    this.ennemi3.agro = false
+                    this.ennemis3.add(this.ennemi3);
+                    this.ennemis3.enableBody = true
+                    this.ennemi3.setPushable(false)
+                    this.ennemi3.setVelocityY(-1)
+
+                    this.ennemi3 = this.physics.add.sprite(535,3200,'aerotroll');
+                    this.ennemi3.spawny = 6000
+                    this.ennemi3.dir = 1
+                    this.ennemi3.agro = false
+                    this.ennemis3.add(this.ennemi3);
+                    this.ennemis3.enableBody = true
+                    this.ennemi3.setPushable(false)
+                    this.ennemi3.setVelocityY(-1)
+
+                    this.ennemi3 = this.physics.add.sprite(835,3300,'aerotroll');
+                    this.ennemi3.spawny = 6000
+                    this.ennemi3.dir = 1
+                    this.ennemi3.agro = false
+                    this.ennemis3.add(this.ennemi3);
+                    this.ennemis3.enableBody = true
+                    this.ennemi3.setPushable(false)
+                    this.ennemi3.setVelocityY(-1)
+
+                    this.ennemi3 = this.physics.add.sprite(1100,3300,'aerotroll');
+                    this.ennemi3.spawny = 6000
+                    this.ennemi3.dir = 1
+                    this.ennemi3.agro = false
+                    this.ennemis3.add(this.ennemi3);
+                    this.ennemis3.enableBody = true
+                    this.ennemi3.setPushable(false)
+                    this.ennemi3.setVelocityY(-1)
+
+                    this.physics.add.collider(this.player,this.ennemis3, mort, null, this);
+                    this.physics.add.collider(this.ennemis3, sol);
+                    this.physics.add.collider(this.ennemis3, this.platforms);
+                    this.physics.add.collider(this.ennemis3, piques, paf, null, this);
+                    this.physics.add.collider(this.ennemis3, this.test);
+                    this.physics.add.collider(this.ennemis3, this.test2);
+                    this.physics.add.collider(this.ennemis3, this.test3);
+                    this.physics.add.collider(this.ennemis3, this.test4);
+                    this.physics.add.collider(this.ennemis3, this.test5);
+                    this.physics.add.collider(this.ennemis3, this.test6);
+                    this.physics.add.collider(this.ennemis3, this.test7);
+                    this.physics.add.collider(this.ennemis3, this.test8);
+                    this.physics.add.collider(this.ennemis3, this.test9);
+                    this.physics.add.collider(this.ennemis3, this.test10);
+                    this.physics.add.collider(this.ennemis3, this.test11);
+                    this.physics.add.collider(this.ennemis3, this.test12);
+                    this.physics.add.collider(this.ennemis3, this.test13);
+                    this.physics.add.collider(this.ennemis3, this.test14);
+                    this.physics.add.collider(this.ennemis3, this.test15);
+                    this.physics.add.collider(this.ennemis3, this.test16);
+
+                    this.ennemis4 = this.physics.add.group();
+                    this.ennemi4 = this.physics.add.sprite(1825,2850,'gattroll');
+                    this.ennemi4.agro = false
+                    this.ennemis4.add(this.ennemi4);
+                    this.ennemis4.enableBody = true
+                    this.ennemi4.setPushable(false)
+                    this.tir2 = this.physics.add.group();
+                    this.tir2.enableBody = true
+                    this.tir2.allowGravity=false
+
+                    this.ennemi4 = this.physics.add.sprite(95,2850,'gattroll');
+                    this.ennemi4.agro = false
+                    this.ennemis4.add(this.ennemi4);
+                    this.ennemis4.enableBody = true
+                    this.ennemi4.setPushable(false)
+                    this.tir2 = this.physics.add.group();
+                    this.tir2.enableBody = true
+                    this.tir2.allowGravity=false
+
+                    this.ennemi4 = this.physics.add.sprite(160,3675,'gattroll');
+                    this.ennemi4.agro = false
+                    this.ennemis4.add(this.ennemi4);
+                    this.ennemis4.enableBody = true
+                    this.ennemi4.setPushable(false)
+                    this.tir2 = this.physics.add.group();
+                    this.tir2.enableBody = true
+                    this.tir2.allowGravity=false
+
+                    this.ennemi4 = this.physics.add.sprite(1055,4100,'gattroll');
+                    this.ennemi4.agro = false
+                    this.ennemis4.add(this.ennemi4);
+                    this.ennemis4.enableBody = true
+                    this.ennemi4.setPushable(false)
+                    this.tir2 = this.physics.add.group();
+                    this.tir2.enableBody = true
+                    this.tir2.allowGravity=false
+
+                    this.physics.add.collider(this.player,this.ennemis4, mort, null, this);
+                    this.physics.add.collider(this.ennemis4, sol);
+                    this.physics.add.collider(this.ennemis4, piques);
+                    this.physics.add.collider(this.tir2, this.player, mort, null, this);
+                    this.physics.add.collider(this.tir2,sol, rebond, null, this);
+                    this.physics.add.collider(this.tir2, this.platforms,rebond, null, this);
+                    this.physics.add.collider(this.tir2,this.test, rebond, null, this);
                     
                 };
                 
@@ -283,13 +808,13 @@
                     if (this.keySpace.isDown) {
                         this.pActif = true
                         if (this.disPoing = true){
-                            this.hitbox = this.physics.add.collider(this.poings, this.ennemis1, paf, null, this);
+                            this.hitbox = this.physics.add.collider(this.poings, this.poings, paf, null, this);
                             this.disPoing = false
                         }
                     }
                     
                     if (this.keySpace.isUp) {
-                        console.log
+                        
                         if (this.disPoing = false){
                             this.physics.world.remove.collider(this.hitbox);
                             this.disPoing = true
@@ -298,8 +823,8 @@
 
 
 
-                    if (this.nbRebond>=300){
-                        this.balle.destroy();
+                    if (this.nbRebond>=10){
+                        this.balle.disableBody(true,true);
                         this.bActive = false
                     }
 
@@ -341,22 +866,29 @@
 
                     
 
-                    this.ennemis1.children.iterate(function (child){
-                        child.setVelocityX(100)
-                        child.setBounceX(1)
-                        // console.log(child.body.blocked.right)
-                        // if (child.body.blocked.right==true){
-                        //     child.setVelocityX(-100)
-                        // }
-                        // if (child.body.blocked.left==true){
-                        //     child.setVelocityX(100)
-                        // }
-                    },this)
+                    // this.ennemis1.children.iterate(function (child){
+                    //     if (child.plat==2){
+                    //         child.setVelocityX(50)
+                    //         if (child.x>child.spawnx+64 && child.dir!="G"){
+                    //             child.flipX= true
+                    //             console.log(child.getVelocityX)
+                    //             child.setVelocityX(-0)
+                    //             child.dir = "G"
+
+                    //         }
+                    //         // if (child.x<child.spawnX-64){
+                    //         //     child.flipX= false
+                    //         //     child.setVelocityX(50)
+                    //         // }
+                    //     }
+
+
+                    // },this)
 
                     this.ennemis2.children.iterate(function (child){
                         while (child.x<this.player.x && this.bActive==false){
                             child.agro = true
-                            this.balle = this.physics.add.sprite(this.ennemi2.x,this.ennemi2.y, 'bullet');
+                            this.balle = this.physics.add.sprite(child.x,child.y, 'bullet');
                             this.tir.add(this.balle);
                             
                             this.bActive = true
@@ -366,41 +898,54 @@
                         }
                     },this)
 
-                    this.ennemis3.children.iterate(function (child){
-                        child.setVelocityY(-100)
-                    },this)
+                    // this.ennemis3.children.iterate(function (child){
+                    //     console.log(child.y)
+                    //     console.log(child.dir)
+                    //     child.setVelocityY(-50)
+                    //     if (child.y>child.spawny+100 && child.dir == 0){
+                    //         child.setVelocityY(-50)
+                    //         child.dir = 0
+                    //     }
+                    //     if (child.y<child.spawny-100 && child.dir == 1){
+                    //         console.log("fsfes")
+                    //         child.setVelocityY(50)
+                    //         child.dir = 0
+                    //     }
+                    // },this)
 
             }}
         
                 var config = {
                 type: Phaser.CANVAS,
                 width: 1920, height: 940, //,940
+                backgroundColor: '#4488aa',
+                pixelArt : true,
                 physics: {
                         default: 'arcade',
                         arcade: {
                             gravity: { y: 300 },
-                            debug: true
+                            debug: false,
                         }},
                 scene: [sceneBase]
                 };
                 new Phaser.Game(config);
 
                 function mort(player){
-                    if (palier3==true){
+                    if (this.palier3==true){
                         this.player.setX(1580)
                         this.player.setY(5400)
                     }
-                    else if (palier2==true){
+                    else if (this.palier2==true){
                         this.player.setX(1580)
                         this.player.setY(5400)
                     }
-                    else if (palier1==true){
+                    else if (this.palier1==true){
                         this.player.setX(1580)
                         this.player.setY(5400)
                     }
                     else{
                         this.player.setX(110)
-                        this.player.setY(5800)
+                        this.player.setY(6000)
                     }
                 }
                 function superposition(test, platforms){
@@ -408,16 +953,10 @@
                     test.x = this.memx;
                     test.y = this.memy;
                 }
-                function attaque(poings, disPoing){
-                    
-                }
 
-                function desAtt(poings,disPoing){
-                    
-                }
-
-                function paf(){
-
+                function paf(ennemis1){
+                    console.log("paf")
+                    this.ennemi1.disableBody(true,true);
                 }
 
                 // function degat(player, ennemis1){
