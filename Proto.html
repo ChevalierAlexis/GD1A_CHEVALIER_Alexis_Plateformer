@@ -23,7 +23,7 @@
                 this.load.spritesheet('aerotroll','assets/aerotroll.png',
                 { frameWidth: 64, frameHeight: 86 });
                 this.load.spritesheet('troll','assets/troll.png',
-                { frameWidth: 64, frameHeight: 64 });
+                { frameWidth: 64, frameHeight: 54 });
                 this.load.spritesheet('gattroll','assets/gattroll.png',
                 { frameWidth: 64, frameHeight: 64 });
                 this.load.spritesheet('trolleur_delite','assets/trolleur-delite.png',
@@ -34,6 +34,7 @@
                 { frameWidth: 34, frameHeight: 25 });
 
                 this.load.image("tileset", "assets/tilesetblock.png");
+                this.load.image("decor", "assets/Decors.png");
                 this.load.tilemapTiledJSON("map", "maptest.json");
                 }
                 
@@ -66,7 +67,7 @@
                     this.bActive = false;
                     this.nbRebond = 0;
                     this.invin = false;
-                    this.palier1 = false
+                    this.palier1 = true
                     this.palier1f = false
                     this.palier2 = false
                     this.palier2f = false
@@ -89,25 +90,41 @@
                         "tileset"
                     )
 
+                    const decors = carteNiveau.addTilesetImage(
+                        "Decors",
+                        "decor"
+                    )
+
                     const sol = carteNiveau.createLayer(
                         "Blocs",
                         tileset
                     )
                     sol.setCollisionByProperty({ solide: true });
 
+                    const border = carteNiveau.createLayer(
+                        "Border",
+                        tileset
+                    )
+                    border.setCollisionByProperty({ solide: true });
+
                     const piques = carteNiveau.createLayer(
                         "Piques",
                         tileset
                     )
                     piques.setCollisionByProperty({ pique: true });
+
+                    const skin = carteNiveau.createLayer(
+                        "Skin",
+                        decors
+                    )
+  
                             
-                    this.player = this.physics.add.sprite(110,6000, 'perso');
+                    this.player = this.physics.add.sprite(110,6200, 'perso');
 
                     this.poings = this.physics.add.sprite(this.player.x+30,this.player.y, 'punch');
                     this.poings.enableBody(true)
                     
                     this.poings.body.allowGravity=false;
-
 
 
 
@@ -386,8 +403,8 @@
                     });
                     this.physics.add.collider(this.stars, this.platforms);
                     this.physics.add.overlap(this.player, this.stars, collectStar, null, this);
-                    // this.physics.add.overlap(this.test, this.platforms, superposition,null,this);
-                    // this.physics.add.overlap(this.test, sol, superposition,null,this);
+                    // this.physics.add.overlap(this.test3, this.platforms, superposition,null,this);
+                    // this.physics.add.overlap(this.test3, sol, superposition,null,this);
                     this.bombs = this.physics.add.group();
                     this.physics.add.collider(this.bombs, this.platforms);
 
@@ -403,6 +420,7 @@
                     this.ennemi1.dir = "D"
                     this.ennemi1.spawnx = 700
                     this.ennemi1.agro = false
+                    this.ennemi1.setSize(64,54)
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
@@ -411,6 +429,7 @@
                     this.ennemi1.plat = 2 
                     this.ennemi1.spawnx = 1700
                     this.ennemi1.agro = false
+                    this.ennemi1.setSize(64,54)
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
@@ -419,6 +438,7 @@
                     this.ennemi1.plat = 2 
                     this.ennemi1.spawnx = 1700
                     this.ennemi1.agro = false
+                    this.ennemi1.setSize(64,54)
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
@@ -427,6 +447,7 @@
                     this.ennemi1.plat = 2 
                     this.ennemi1.spawnx = 1700
                     this.ennemi1.agro = false
+                    this.ennemi1.setSize(64,54)
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
@@ -435,6 +456,7 @@
                     this.ennemi1.plat = 2 
                     this.ennemi1.spawnx = 1700
                     this.ennemi1.agro = false
+                    this.ennemi1.setSize(64,54)
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
@@ -443,6 +465,7 @@
                     this.ennemi1.plat = 2 
                     this.ennemi1.spawnx = 1700
                     this.ennemi1.agro = false
+                    this.ennemi1.setSize(64,54)
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
@@ -451,6 +474,7 @@
                     this.ennemi1.plat = 2 
                     this.ennemi1.spawnx = 1700
                     this.ennemi1.agro = false
+                    this.ennemi1.setSize(64,54)
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
@@ -459,6 +483,7 @@
                     this.ennemi1.plat = 2 
                     this.ennemi1.spawnx = 1700
                     this.ennemi1.agro = false
+                    this.ennemi1.setSize(64,54)
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
@@ -467,6 +492,7 @@
                     this.ennemi1.plat = 2 
                     this.ennemi1.spawnx = 1700
                     this.ennemi1.agro = false
+                    this.ennemi1.setSize(64,54)
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
@@ -475,6 +501,7 @@
                     this.ennemi1.plat = 2 
                     this.ennemi1.spawnx = 1700
                     this.ennemi1.agro = false
+                    this.ennemi1.setSize(64,54)
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
@@ -483,6 +510,7 @@
                     this.ennemi1.plat = 2 
                     this.ennemi1.spawnx = 1700
                     this.ennemi1.agro = false
+                    this.ennemi1.setSize(64,54)
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
@@ -499,6 +527,7 @@
                     this.ennemi1.plat = 2 
                     this.ennemi1.spawnx = 1700
                     this.ennemi1.agro = false
+                    this.ennemi1.setSize(64,54)
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
@@ -507,6 +536,7 @@
                     this.ennemi1.plat = 2 
                     this.ennemi1.spawnx = 1700
                     this.ennemi1.agro = false
+                    this.ennemi1.setSize(64,54)
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
@@ -515,6 +545,7 @@
                     this.ennemi1.plat = 2 
                     this.ennemi1.spawnx = 1700
                     this.ennemi1.agro = false
+                    this.ennemi1.setSize(64,54)
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
@@ -523,30 +554,36 @@
                     this.ennemi1.plat = 2 
                     this.ennemi1.spawnx = 1700
                     this.ennemi1.agro = false
+                    this.ennemi1.setSize(64,54)
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
+                    
 
                     this.ennemi1 = this.physics.add.sprite(480,3335,'troll'); 
                     this.ennemi1.plat = 2 
                     this.ennemi1.spawnx = 1700
                     this.ennemi1.agro = false
+                    this.ennemi1.setSize(64,54)
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
+                    
 
                     this.ennemi1 = this.physics.add.sprite(1185,3335,'troll'); 
                     this.ennemi1.plat = 2 
                     this.ennemi1.spawnx = 1700
                     this.ennemi1.agro = false
+                    this.ennemi1.setSize(64,54)
                     this.ennemis1.add(this.ennemi1);
                     this.ennemis1.enableBody = true
                     this.ennemi1.setPushable(false)
+                    
 
 
 
 
-                    this.physics.add.collider(this.player,this.ennemis1, mort, null, this);
+                    this.physics.add.collider(this.player,this.ennemis1, degat, null, this);
                     this.physics.add.collider(this.ennemis1, sol);
                     this.physics.add.collider(this.ennemis1, piques, paf, null, this);
                     this.physics.add.collider(this.ennemis1, this.test);
@@ -565,6 +602,7 @@
                     this.physics.add.collider(this.ennemis1, this.test14);
                     this.physics.add.collider(this.ennemis1, this.test15);
                     this.physics.add.collider(this.ennemis1, this.test16);
+                    this.physics.add.collider(this.ennemis1, border);
 
 
                     
@@ -578,32 +616,50 @@
                     this.tir.enableBody = true
                     this.tir.allowGravity=false
 
-                    this.ennemi2 = this.physics.add.sprite(1760,4550,'trolleur_delite');
-                    this.ennemi2.agro = false
-                    this.ennemis2.add(this.ennemi2);
-                    this.ennemis2.enableBody = true
-                    this.ennemi2.setPushable(false)
+                    // this.ennemi2 = this.physics.add.sprite(1760,4550,'trolleur_delite');
+                    // this.ennemi2.agro = false
+                    // this.ennemis2.add(this.ennemi2);
+                    // this.ennemis2.enableBody = true
+                    // this.ennemi2.setPushable(false)
 
-                    this.ennemi2 = this.physics.add.sprite(800,2850,'trolleur_delite');
-                    this.ennemi2.agro = false
-                    this.ennemis2.add(this.ennemi2);
-                    this.ennemis2.enableBody = true
-                    this.ennemi2.setPushable(false)
+                    // this.ennemi2 = this.physics.add.sprite(800,2850,'trolleur_delite');
+                    // this.ennemi2.agro = false
+                    // this.ennemis2.add(this.ennemi2);
+                    // this.ennemis2.enableBody = true
+                    // this.ennemi2.setPushable(false)
 
-                    this.ennemi2 = this.physics.add.sprite(1120,2850,'trolleur_delite');
-                    this.ennemi2.agro = false
-                    this.ennemis2.add(this.ennemi2);
-                    this.ennemis2.enableBody = true
-                    this.ennemi2.setPushable(false)
+                    // this.ennemi2 = this.physics.add.sprite(1120,2850,'trolleur_delite');
+                    // this.ennemi2.agro = false
+                    // this.ennemis2.add(this.ennemi2);
+                    // this.ennemis2.enableBody = true
+                    // this.ennemi2.setPushable(false)
                             
-                    this.physics.add.collider(this.player,this.ennemis2, mort, null, this);
+                    
+                    this.physics.add.collider(this.player,this.ennemis2, degat, null, this);
                     this.physics.add.collider(this.ennemis2, sol);
                     this.physics.add.collider(this.ennemis2, this.test);
+                    this.physics.add.collider(this.ennemis2, this.test2);
+                    this.physics.add.collider(this.ennemis2, this.test3);
+                    this.physics.add.collider(this.ennemis2, this.test4);
+                    this.physics.add.collider(this.ennemis2, this.test5);
+                    this.physics.add.collider(this.ennemis2, this.test6);
+                    this.physics.add.collider(this.ennemis2, this.test7);
+                    this.physics.add.collider(this.ennemis2, this.test8);
+                    this.physics.add.collider(this.ennemis2, this.test9);
+                    this.physics.add.collider(this.ennemis2, this.test10);
+                    this.physics.add.collider(this.ennemis2, this.test11);
+                    this.physics.add.collider(this.ennemis2, this.test12);
+                    this.physics.add.collider(this.ennemis2, this.test13);
+                    this.physics.add.collider(this.ennemis2, this.test14);
+                    this.physics.add.collider(this.ennemis2, this.test15);
+                    this.physics.add.collider(this.ennemis2, this.test16);
                     this.physics.add.collider(this.ennemis2, piques);
-                    this.physics.add.collider(this.tir, this.player, mort, null, this);
+                    this.physics.add.collider(this.ennemis2, border);
+                    this.physics.add.collider(this.tir, this.player, degat, null, this);
                     this.physics.add.collider(this.tir,sol, rebond, null, this);
                     this.physics.add.collider(this.tir, this.platforms,rebond, null, this);
                     this.physics.add.collider(this.tir,this.test, rebond, null, this);
+
 
 
                     this.ennemis3 = this.physics.add.group();
@@ -698,10 +754,11 @@
                     this.ennemi3.setPushable(false)
                     this.ennemi3.setVelocityY(-1)
 
-                    this.physics.add.collider(this.player,this.ennemis3, mort, null, this);
-                    this.physics.add.collider(this.ennemis3, sol);
+                    this.physics.add.collider(this.player,this.ennemis3, degat, null, this);
+                    this.physics.add.collider(this.ennemis3, sol,changeDir,null,this);
                     this.physics.add.collider(this.ennemis3, this.platforms);
                     this.physics.add.collider(this.ennemis3, piques, paf, null, this);
+                    this.physics.add.collider(this.ennemis3, border);
                     this.physics.add.collider(this.ennemis3, this.test);
                     this.physics.add.collider(this.ennemis3, this.test2);
                     this.physics.add.collider(this.ennemis3, this.test3);
@@ -734,32 +791,42 @@
                     this.ennemis4.add(this.ennemi4);
                     this.ennemis4.enableBody = true
                     this.ennemi4.setPushable(false)
-                    this.tir2 = this.physics.add.group();
-                    this.tir2.enableBody = true
-                    this.tir2.allowGravity=false
+
 
                     this.ennemi4 = this.physics.add.sprite(160,3675,'gattroll');
                     this.ennemi4.agro = false
                     this.ennemis4.add(this.ennemi4);
                     this.ennemis4.enableBody = true
                     this.ennemi4.setPushable(false)
-                    this.tir2 = this.physics.add.group();
-                    this.tir2.enableBody = true
-                    this.tir2.allowGravity=false
+
 
                     this.ennemi4 = this.physics.add.sprite(1055,4100,'gattroll');
                     this.ennemi4.agro = false
                     this.ennemis4.add(this.ennemi4);
                     this.ennemis4.enableBody = true
                     this.ennemi4.setPushable(false)
-                    this.tir2 = this.physics.add.group();
-                    this.tir2.enableBody = true
-                    this.tir2.allowGravity=false
 
-                    this.physics.add.collider(this.player,this.ennemis4, mort, null, this);
+                    this.physics.add.collider(this.player,this.ennemis4, degat, null, this);
                     this.physics.add.collider(this.ennemis4, sol);
                     this.physics.add.collider(this.ennemis4, piques);
-                    this.physics.add.collider(this.tir2, this.player, mort, null, this);
+                    this.physics.add.collider(this.ennemis4, border);
+                    this.physics.add.collider(this.ennemis4, this.test);
+                    this.physics.add.collider(this.ennemis4, this.test2);
+                    this.physics.add.collider(this.ennemis4, this.test3);
+                    this.physics.add.collider(this.ennemis4, this.test4);
+                    this.physics.add.collider(this.ennemis4, this.test5);
+                    this.physics.add.collider(this.ennemis4, this.test6);
+                    this.physics.add.collider(this.ennemis4, this.test7);
+                    this.physics.add.collider(this.ennemis4, this.test8);
+                    this.physics.add.collider(this.ennemis4, this.test9);
+                    this.physics.add.collider(this.ennemis4, this.test10);
+                    this.physics.add.collider(this.ennemis4, this.test11);
+                    this.physics.add.collider(this.ennemis4, this.test12);
+                    this.physics.add.collider(this.ennemis4, this.test13);
+                    this.physics.add.collider(this.ennemis4, this.test14);
+                    this.physics.add.collider(this.ennemis4, this.test15);
+                    this.physics.add.collider(this.ennemis4, this.test16);
+                    this.physics.add.collider(this.tir2, this.player, degat, null, this);
                     this.physics.add.collider(this.tir2,sol, rebond, null, this);
                     this.physics.add.collider(this.tir2, this.platforms,rebond, null, this);
                     this.physics.add.collider(this.tir2,this.test, rebond, null, this);
@@ -800,7 +867,7 @@
                         this.player.setVelocityX(0);
                         // this.player.anims.play('turn'); 
                     }
-
+                    console.log(this.bActive)
                     if (this.keyZ.isDown && this.player.body.onFloor()) {
                             this.player.setVelocityY(-225);  
                     }
@@ -808,7 +875,7 @@
                     if (this.keySpace.isDown) {
                         this.pActif = true
                         if (this.disPoing = true){
-                            this.hitbox = this.physics.add.collider(this.poings, this.poings, paf, null, this);
+                            this.hitbox = this.physics.add.collider(this.poings, this.ennemis1, paf, null, this);
                             this.disPoing = false
                         }
                     }
@@ -821,10 +888,10 @@
                         }
                     }
 
-
+                    
 
                     if (this.nbRebond>=10){
-                        this.balle.disableBody(true,true);
+                        this.balle.destroy();
                         this.bActive = false
                     }
 
@@ -840,7 +907,6 @@
                     if (this.player.y<3616){
                         this.palier3 = true
                         this.palier2= false
-                        console.log("up")
                     }
 
                     if (this.palier3 == true && this.palier3f == false){
@@ -862,63 +928,78 @@
                         this.palier1f=true
                     }
 
-
-
                     
 
-                    // this.ennemis1.children.iterate(function (child){
-                    //     if (child.plat==2){
-                    //         child.setVelocityX(50)
-                    //         if (child.x>child.spawnx+64 && child.dir!="G"){
-                    //             child.flipX= true
-                    //             console.log(child.getVelocityX)
-                    //             child.setVelocityX(-0)
-                    //             child.dir = "G"
+                    this.ennemis1.children.iterate(function (child){
+                        if (this.player.x>child.x) {
+                            child.setVelocityX(30);
+                        }
+                        if (this.player.x<child.x){
+                                child.setVelocityX(-30);
+                            }
 
-                    //         }
-                    //         // if (child.x<child.spawnX-64){
-                    //         //     child.flipX= false
-                    //         //     child.setVelocityX(50)
-                    //         // }
-                    //     }
-
-
-                    // },this)
+                    },this)
 
                     this.ennemis2.children.iterate(function (child){
-                        while (child.x<this.player.x && this.bActive==false){
+                        child.setVelocityX(-1)
+                        while (child.x>this.player.x && this.bActive==false){
+                            console.log ("spot")
                             child.agro = true
-                            this.balle = this.physics.add.sprite(child.x,child.y, 'bullet');
+                            this.balle = this.physics.add.sprite(child.x-100,child.y, 'bullet');
                             this.tir.add(this.balle);
                             
                             this.bActive = true
-                            this.balle.setBounce(1);   
-                            this.physics.moveToObject(this.balle, this.player,200)
+                            this.balle.setBounce(1); 
+                            this.physics.moveTo(this.balle,child.x-3000,child.y+10,2000)
                             this.balle.setCollideWorldBounds(true);
                         }
                     },this)
 
-                    // this.ennemis3.children.iterate(function (child){
-                    //     console.log(child.y)
-                    //     console.log(child.dir)
-                    //     child.setVelocityY(-50)
-                    //     if (child.y>child.spawny+100 && child.dir == 0){
-                    //         child.setVelocityY(-50)
-                    //         child.dir = 0
-                    //     }
-                    //     if (child.y<child.spawny-100 && child.dir == 1){
-                    //         console.log("fsfes")
-                    //         child.setVelocityY(50)
-                    //         child.dir = 0
-                    //     }
-                    // },this)
+                    this.ennemis3.children.iterate(function (child){
+                       if (child.dir==1) {
+                            child.setVelocityY(-30)
+                       }
+                       if (child.dir==0) {
+                        child.setVelocityY(30)   
+                       }
+                    },this)
 
-            }}
+                    this.ennemis4.children.iterate(function (child){
+                        child.setVelocityX(-1)
+                        while (child.x<this.player.x && this.bActive2==false){
+                            child.agro2 = true
+                            this.balle2 = this.physics.add.sprite(child.x,child.y, 'bullet');
+                            this.bActive2 = true
+                            this.tir2.add(this.balle2);
+                            
+                            
+                            this.balle2.setBounce(1);   
+                            this.physics.moveToObject(this.balle2, this.player,200)
+                            this.balle2.setCollideWorldBounds(true);
+                        }
+                    },this)
+                }}
+                class menu extends Phaser.Scene {
+            constructor() {
+                super("menu");
+            }
+            preload(){
+                this.load.image('menu', 'assets/menu.png');
+            }
+            create(){
+                const ecranMenu = this.add.sprite(960, 470, 'menu')
+                    .setInteractive()
+	                .on('pointerdown', () => this.scene.start("sceneBase"))
+                function lancer() {
+                    this.scene.start("sceneBase");
+                };
+            }
+        }
         
                 var config = {
                 type: Phaser.CANVAS,
                 width: 1920, height: 940, //,940
-                backgroundColor: '#4488aa',
+                backgroundColor: '#FFC8BC',
                 pixelArt : true,
                 physics: {
                         default: 'arcade',
@@ -926,57 +1007,62 @@
                             gravity: { y: 300 },
                             debug: false,
                         }},
-                scene: [sceneBase]
+                scene: [menu,sceneBase]
                 };
                 new Phaser.Game(config);
 
                 function mort(player){
                     if (this.palier3==true){
-                        this.player.setX(1580)
-                        this.player.setY(5400)
+                        player.setX(1580)
+                        player.setY(5400)
+                        this.pv = 3
                     }
                     else if (this.palier2==true){
-                        this.player.setX(1580)
-                        this.player.setY(5400)
+                        player.setX(1580)
+                        player.setY(5400)
+                        this.pv = 3
                     }
                     else if (this.palier1==true){
-                        this.player.setX(1580)
-                        this.player.setY(5400)
+                        player.setX(1580)
+                        player.setY(5400)
+                        this.pv = 3
                     }
                     else{
-                        this.player.setX(110)
-                        this.player.setY(6000)
+                        player.setX(110)
+                        player.setY(6000)
+                        this.pv = 3
                     }
                 }
                 function superposition(test, platforms){
-                    this.input.activePointer.setDragState(this.input.pointer, 0);
+                    this.input.setDragState(this.input.activePointer, 0);
                     test.x = this.memx;
                     test.y = this.memy;
                 }
 
-                function paf(ennemis1){
-                    console.log("paf")
-                    this.ennemi1.disableBody(true,true);
+                function paf(monstre){
+                  
+                    monstre.disableBody(true,true);
                 }
 
-                // function degat(player, ennemis1){
+                function degat(player, ennemis1){
                     
-                //     if (this.invin == false)
-                //         this.pv = this.pv-1
-                //         this.invin = true
-                //         this.player.alpha = 0.5
-                //         this.frameinvin = this.time.addEvent({
-                //             delay: 1500,
-                //             callback: ()=>{
-                //                 this.invin = false
-                //                 this.player.alpha = 1;
-                //             },
-                //         loop: false})
+                    if (this.invin == false)
+                        this.pv = this.pv-1
+                        this.invin = true
+                        this.player.alpha = 0.5
+                        this.frameinvin = this.time.addEvent({
+                            delay: 1500,
+                            callback: ()=>{
+                           
+                                this.invin = false
+                                this.player.alpha = 1;
+                            },
+                        loop: false})
     
-                //     if (this.pv<=0){
-                //         hitBomb()
-                //     }
-                // }
+                    if (this.pv<=0){
+                        mort(this.player)
+                    }
+                }
 
                 function collectStar(player, star){
                     star.disableBody(true, true); 
@@ -1000,10 +1086,16 @@
                     this.nbRebond += 1
                 }
 
-                function changeDir(){
-                    console.log("fesfes")
-                    this.ennemis1.setVelocityX(-100)
+                function changeDir(monstre){
+                    if(monstre.dir==1){
+                        monstre.dir=0
+                    }
+                    else{
+                        monstre.dir=1
+                    }
                 }
+
+                
             </script>
         </body>
     </html>
